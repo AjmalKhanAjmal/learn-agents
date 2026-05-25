@@ -1,0 +1,4 @@
+git init
+git config user.name "user name"
+git config user.email "email@gmail.com"
+git clone https://github.com/--.git
