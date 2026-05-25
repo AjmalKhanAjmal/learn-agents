@@ -1,12 +1,107 @@
-git init
-git branch -M main
 
-git config user.name "AjmalKhanAjmal"
-git config user.email "yourmail@gmail.com"
+Workflow 1 — Using git clone
+Use when GitHub repository already exists and you want to download it.
+=============================================================================
+    git clone https://github.com/USERNAME/REPO.git
+    
+    # Downloads complete project from GitHub
+    # Automatically initializes Git and connects remote
+    
+    cd REPO
+    
+    # Opens downloaded project folder
+    # All Git commands should run inside this folder
+    
+    git config user.name "AjmalKhanAjmal"
+    
+    # Sets username only for this project
+    # Commits will show this username
+    
+    git config user.email "yourmail@gmail.com"
+    
+    # Sets email only for this repository
+    # Useful for personal account on office laptop
+    
+    git pull
+    
+    # Downloads latest changes from GitHub
+    # Usually done before starting work
+    
+    git add .
+    
+    # Adds updated/new files for commit
+    # Git starts tracking these changes
+    
+    git commit -m "Added new feature"
+    
+    # Creates snapshot/version of changes
+    # Commit message explains updates
+    
+    git push
+    
+    # Uploads commits to GitHub
+    # Team members can access your changes
+    
+    
+    
+Workflow 2 — Without git clone
+Use when you already have local project files and want to upload them to GitHub.
+=================================================================================
+    git init
+    
+    # Creates hidden .git folder
+    # Converts normal folder into Git repository
+    
+    git branch -M main
+    
+    # Renames branch from master to main
+    # Modern GitHub repositories use main
+    
+    git config user.name "AjmalKhanAjmal"
+    
+    # Sets username only for this project
+    # Commits will appear with this username
+    
+    git config user.email "yourmail@gmail.com"
+    
+    # Sets email only for this repository
+    # Useful for separating office and personal accounts
+    
+    git remote add origin https://github.com/USERNAME/REPO.git
+    
+    # Connects local project to GitHub repository
+    # origin is default remote repository name
+    
+    git add .
+    
+    # Adds all files for commit
+    # Git starts tracking project files
+    
+    git commit -m "Initial commit"
+    
+    # Creates first saved version of project
+    # Commit message describes current state
+    
+    git push -u origin main
+    
+    # Uploads local project to GitHub
+    # Links local main branch with remote main
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
-git remote add origin https://github.com/USERNAME/REPO.git
 
-git add .
-git commit -m "Initial commit"
 
-git push -u origin main
+
+
+
+
+
