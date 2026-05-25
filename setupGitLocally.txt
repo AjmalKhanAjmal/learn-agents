@@ -1,7 +1,12 @@
 git init
-git config user.name "user name"
-git config user.email "email@gmail.com"
-git clone https://github.com/--.git
-git remote add origin https://github.com/--.git
+git branch -M main
+
+git config user.name "AjmalKhanAjmal"
+git config user.email "yourmail@gmail.com"
+
+git remote add origin https://github.com/USERNAME/REPO.git
+
 git add .
-git commit -m "test commit - 2"
+git commit -m "Initial commit"
+
+git push -u origin main
