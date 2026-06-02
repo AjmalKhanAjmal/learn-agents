@@ -1,6 +1,6 @@
 from app.memory.redis_memory import RedisMemory
-from app.chains.chat_chain import chain
-
+# from app.chains.chat_chain import chain
+from app.chains.chat_chain import get_chain
 
 class ConversationService:
 
@@ -21,6 +21,10 @@ Conversation History:
 User Message:
 {message}
 """
+
+
+
+        chain = get_chain()
 
         response = chain.invoke({
             "input": final_input

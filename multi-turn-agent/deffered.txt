@@ -1,0 +1,130 @@
+Simple Chatbot
+      ↓
+Memory Chatbot      ← You are here
+      ↓
+Memory + RAG
+      ↓
+Memory + RAG + Tools
+      ↓
+LangGraph Agent
+      ↓
+Production AI Assistant
+
+
+
+
+
+
+Memory + RAG : (prompt for given one) 
+================
+
+
+I want to build a production-ready conversational AI application using FastAPI, LangChain, LangGraph, Redis, and Groq.
+
+Requirements:
+
+1. Prompt Management
+
+   * Use ChatPromptTemplate.
+   * Create reusable system prompts.
+   * Inject dynamic variables:
+
+     * {input}
+     * {history}
+     * {context}
+   * Separate prompt definitions from business logic.
+
+2. Conversation Memory
+
+   * Store conversation history in Redis.
+   * Retrieve previous messages by session_id.
+   * Convert Redis history into LangChain messages.
+   * Inject history into ChatPromptTemplate using MessagesPlaceholder.
+   * Maintain multi-turn conversations.
+
+3. RAG (Retrieval Augmented Generation)
+
+   * Create a document ingestion pipeline.
+   * Load PDF, DOCX, and TXT files.
+   * Split documents into chunks.
+   * Generate embeddings.
+   * Store embeddings in a vector database.
+   * Retrieve top-k relevant documents.
+   * Inject retrieved context into prompts.
+   * Return citations with responses.
+
+4. LangChain Pipeline
+
+   * Build chains using:
+
+     * ChatPromptTemplate
+     * Retriever
+     * LLM
+     * Output Parser
+   * Explain the flow of data through each component.
+
+5. LangGraph Workflow
+
+   * Create a stateful graph.
+   * Define graph state using TypedDict.
+   * Create nodes:
+
+     * Load Memory
+     * Retrieve Context
+     * Generate Response
+     * Save Memory
+   * Connect nodes using edges.
+   * Explain state transitions in detail.
+
+6. Project Structure
+
+backend/
+├── app/
+│   ├── api/
+│   ├── chains/
+│   ├── graphs/
+│   ├── memory/
+│   ├── prompts/
+│   ├── rag/
+│   ├── services/
+│   ├── models/
+│   ├── schemas/
+│   └── config/
+│
+├── tests/
+└── main.py
+
+7. Explain Internals
+
+   * What happens inside ChatPromptTemplate.
+   * How variables are injected.
+   * How MessagesPlaceholder works.
+   * How retrieval works.
+   * How LangGraph state flows between nodes.
+   * How memory is stored and retrieved.
+
+8. API Layer
+
+   * Build FastAPI endpoints.
+   * Accept:
+     session_id
+     message
+   * Return:
+     answer
+     retrieved_documents
+     metadata
+
+9. Observability
+
+   * Add logging.
+   * Add tracing.
+   * Explain how LangSmith can be integrated.
+
+10. Output Requirements
+
+    * Generate complete code.
+    * Explain every file.
+    * Explain execution flow from API request to final response.
+    * Explain why each component exists.
+    * Follow production-grade best practices.
+    * Use latest LangChain and LangGraph patterns.

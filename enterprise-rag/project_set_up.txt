@@ -1,0 +1,16 @@
+mkdir enterprise-rag
+
+mkdir app,tests,docs,docker,scripts,monitoring
+
+mkdir app\api,app\core,app\schemas,app\memory,app\prompts,app\rag,app\chains,app\graphs,app\services,app\utils
+
+mkdir app\api\routes
+
+mkdir tests\unit,tests\integration
+==================================================
+                    OR
+===================================================
+RUN python .\create_structure.py
+
+Step - 1 
+python -m venv .venv

@@ -1,0 +1,33 @@
+from fastapi import APIRouter, UploadFile, File
+import os
+
+from app.rag.extractor import extract_pdf_text
+from app.rag.splitter import split_text
+from app.rag.embedder import embed
+from app.rag.vector_store import create_index
+
+router = APIRouter()
+
+
+@router.post("/upload")
+async def upload(file: UploadFile = File(...)):
+
+    os.makedirs("uploads", exist_ok=True)
+
+    path = f"uploads/{file.filename}"
+
+    with open(path, "wb") as f:
+        f.write(await file.read())
+
+    text = extract_pdf_text(path)
+
+    chunks = split_text(text)
+
+    vectors = embed(chunks)
+
+    create_index(vectors, chunks)
+
+    return {
+        "message": "Document indexed",
+        "chunks": len(chunks)
+    }

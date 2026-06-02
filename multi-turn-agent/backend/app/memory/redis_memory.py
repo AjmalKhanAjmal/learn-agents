@@ -6,7 +6,7 @@ r = redis.Redis.from_url(settings.REDIS_URL)
 
 
 class RedisMemory:
-
+ 
     @staticmethod
     def save_message(session_id, role, content):
         try:
