@@ -22,7 +22,10 @@ from tenacity import (
     wait_exponential,
 )
 
-from app.core.config import settings
+from app.core.config import (
+    PINECONE_API_KEY,
+    PINECONE_INDEX
+)
 from app.core.exceptions import GenerationError, LLMRateLimitError
 from app.core.logging import get_logger
 from app.models.schemas import AnswerResponse, Citation, RetrievedChunk

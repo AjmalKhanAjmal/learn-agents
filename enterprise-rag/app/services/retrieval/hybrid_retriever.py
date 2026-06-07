@@ -15,7 +15,10 @@ import time
 from functools import lru_cache
 from typing import Any
 
-from app.core.config import settings
+from app.core.config import (
+    PINECONE_API_KEY,
+    PINECONE_INDEX
+)
 from app.core.exceptions import RetrievalError
 from app.core.logging import get_logger
 from app.models.schemas import RetrievedChunk
