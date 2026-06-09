@@ -13,7 +13,7 @@ router = APIRouter()
 async def upload(file: UploadFile = File(...)):
 
     os.makedirs("uploads", exist_ok=True)
-
+ 
     path = f"uploads/{file.filename}"
 
     with open(path, "wb") as f:
