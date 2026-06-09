@@ -9,7 +9,10 @@ from typing import Any
 import structlog
 from structlog.types import EventDict, Processor
 
-from app.core.config import settings
+from app.core.config import (
+    PINECONE_API_KEY,
+    PINECONE_INDEX
+)
 
 
 def _add_app_context(logger: Any, method: str, event_dict: EventDict) -> EventDict:
