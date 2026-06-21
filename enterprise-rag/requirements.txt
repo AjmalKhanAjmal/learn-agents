@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-multipart
+
+langchain
+langchain-community
+langchain-groq
+
+sentence-transformers
+faiss-cpu
+
+pypdf
+
+python-dotenv
+langchain-huggingface
+
+pip install langchain langchain-core langchain-text-splitters langchain-groq langchain-pinecone langchain-huggingface pinecone sentence-transformers
