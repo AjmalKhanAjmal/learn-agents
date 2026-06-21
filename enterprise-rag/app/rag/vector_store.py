@@ -45,25 +45,34 @@ from langchain_core.documents import Document
 from app.rag.embedder import embeddings
 from app.core.config import (
     PINECONE_API_KEY,
-    PINECONE_INDEX
+    PINECONE_SYMANTIC_INDEX
+    # PINECONE_INDEX
 )
 
 pc = Pinecone(
     api_key=PINECONE_API_KEY
 )
 
-index = pc.Index(
-    PINECONE_INDEX
-)
+# index = pc.Index(
+#     PINECONE_INDEX
+# )
 
-vector_store = PineconeVectorStore(
-    index=index,
-    embedding=embeddings
-)
+# vector_store = PineconeVectorStore(
+#     index=index,
+#     embedding=embeddings
+# )
 
 
 def create_index(chunks):
+    index = pc.Index(
+    PINECONE_SYMANTIC_INDEX
+    # PINECONE_INDEX
+    )
 
+    vector_store = PineconeVectorStore(
+        index=index,
+        embedding=embeddings()
+    )
     docs = [
         Document(page_content=chunk)
         for chunk in chunks
@@ -76,7 +85,19 @@ def create_index(chunks):
 
 def search(query, k=3):
 
+    index = pc.Index(
+    # PINECONE_INDEX
+    PINECONE_SYMANTIC_INDEX
+    )
+
+    vector_store = PineconeVectorStore(
+        index=index,
+        embedding=embeddings()
+    )
+    
     return vector_store.similarity_search(
         query=query,
         k=k
     )
+
+
