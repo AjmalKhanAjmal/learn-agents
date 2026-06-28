@@ -15,3 +15,5 @@ python-dotenv
 langchain-huggingface
 
 pip install langchain langchain-core langchain-text-splitters langchain-groq langchain-pinecone langchain-huggingface pinecone sentence-transformers
+
+rank-bm25

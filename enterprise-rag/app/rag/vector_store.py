@@ -90,6 +90,19 @@ def search(query, k=3):
     PINECONE_SYMANTIC_INDEX
     )
 
+
+    # from pinecone import Pinecone
+
+    # pc = Pinecone(api_key="YOUR_API_KEY")
+
+    # index = pc.Index("your-index-name")
+
+    # index.delete(delete_all=True)
+
+    # print("All vectors deleted successfully.")
+
+ 
+
     vector_store = PineconeVectorStore(
         index=index,
         embedding=embeddings()
