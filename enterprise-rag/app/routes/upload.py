@@ -41,8 +41,7 @@ from app.rag.vector_store import create_index
 
 router = APIRouter()
 
-
-@router.post("/upload")
+@router.post("/post")
 async def upload(file: UploadFile = File(...)):
 
     os.makedirs("uploads", exist_ok=True)
@@ -62,5 +61,3 @@ async def upload(file: UploadFile = File(...)):
         "message": "Document indexed successfully",
         "chunks": len(chunks)
     }
-
-    
