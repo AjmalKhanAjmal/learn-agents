@@ -70,10 +70,12 @@ def chat(request: ChatRequest):
     docs = retrieve(request.question)
 
     print("docs  -- ", docs)
-    context = "\n\n".join(
-        doc.page_content
-        for doc in docs
-    )
+    # context = "\n\n".join(
+    #     doc.page_content
+    #     for doc in docs
+    # )
+    
+    context = "\n\n".join(docs)
 
     prompt = ChatPromptTemplate.from_template(
         """

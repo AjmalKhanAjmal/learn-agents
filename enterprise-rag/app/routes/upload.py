@@ -52,7 +52,7 @@ async def upload(file:UploadFile):
     path = f"uploads/{file.filename}"
 
     with open(path, "wb") as f:
-        print("HHFK",f)
+        # print("HHFK",f)
         f.write(await file.read())   
     
     text = extract_pdf_text(path)

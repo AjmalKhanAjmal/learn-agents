@@ -13,6 +13,7 @@ def hybrid_search(query,k=3):
         query=query,
         k=k
     )
+    print("keyword_results",keyword_results)
 
     merged=[]
 
