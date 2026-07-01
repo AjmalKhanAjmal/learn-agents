@@ -66,9 +66,10 @@ llm = ChatGroq(
 
 @router.post("/chat")
 def chat(request: ChatRequest):
-
+    
     docs = retrieve(request.question)
 
+    print("docs  -- ", docs)
     context = "\n\n".join(
         doc.page_content
         for doc in docs

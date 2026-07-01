@@ -4,14 +4,13 @@ python-multipart
 langchain
 langchain-community
 langchain-groq
-sentence-transformers
 faiss-cpu
 pypdf
-python-dotenv
-langchain-huggingface
+python-dotenv 
+langchain-core 
 langchain-text-splitters 
-langchain-groq 
 langchain-pinecone 
 langchain-huggingface 
 pinecone 
 sentence-transformers
+rank-bm25
