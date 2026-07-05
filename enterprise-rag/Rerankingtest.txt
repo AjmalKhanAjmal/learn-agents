@@ -1,0 +1,73 @@
+ 
+Semantic without Reranking :
+ "question": "Why did the payment service become slow, and what exact change fixed it?"
+
+ "answer":The payment service didn't become slow, but rather, an order appeared as \"processing\" for several minutes
+  after payment. The issue was caused by an asynchronous order-status worker that had temporarily stopped processing 
+  messages. Restarting the worker restored normal status updates. There was no change made to the payment service 
+  itself, as the investigation showed that the payment had completed successfully.
+
+
+"question": How was Redis used specifically to solve repeated fraud-check requests?
+
+
+  "answer": "Redis was used to store short-lived fraud-check responses for 90 seconds, so that repeated external requests for the same customer session could be avoided, thus decreasing the repeated external requests and returning payment latency to normal."
+
+
+"question":Which Redis use case was related to payment latency rather than carts, sessions, or rate limiting? This"
+
+answer : The Redis use case related to payment latency was storing short-lived fraud-check responses in Redis for 90 seconds to decrease repeated external requests to the fraud-detection provider, as described in Section 4: Payment Service Incident INC-7742.
+
+
+
+"question":What happened in incident INC-7742?
+
+  "answer": "I could not find that information."
+
+  "question": Why did an order remain in processing even though payment succeeded?
+
+
+  "answer": "The order remained in \"processing\" because an asynchronous order-status worker had temporarily stopped processing messages. Restarting the worker restored normal status updates."
+
+
+
+
+"question":Which ticket involved duplicate notifications, and how was it fixed?
+"answer": "The ticket that involved duplicate notifications was TKT-8822. It was fixed by adding idempotency checks before sending emails, which stopped the duplicate notifications from being sent. The issue was caused by a retry mechanism that submitted the same notification job more than once."
+
+"question":Why did the shopping cart become empty after inactivity?
+"answer": "The shopping cart became empty after inactivity because temporary cart records had reached their configured expiration time."
+
+
+
+with Reranking : 
+=============================
+ "question": "Why did the payment service become slow, and what exact change fixed it?"
+
+"answer":The payment service became slow because of repeated calls to an external fraud-detection provider. Every payment request triggered multiple identical fraud-check requests for the same customer session. \n\nThe exact change that fixed it was storing short-lived fraud-check responses in Redis for ninety seconds, which significantly decreased repeated external requests and returned payment latency to normal
+ "question": How was Redis used specifically to solve repeated fraud-check requests?
+{
+  "answer": "Redis was used to store short-lived fraud-check responses for 90 seconds. This caching solution decreased repeated external requests to the fraud-detection provider, significantly reducing payment latency."
+}
+
+
+
+ "question": Which Redis use case was related to payment latency rather than carts, sessions, or rate limiting? This"
+"answer": "The Redis use case related to payment latency was storing short-lived fraud-check responses in Redis for 90 seconds to reduce repeated external requests, as described in Section 4: Payment Service Incident INC-7742."
+
+
+ "question": What happened in incident INC-7742?
+ "answer": "In incident INC-7742, the payment-processing service experienced severe latency during evening traffic. The problem was caused by repeated calls to an external fraud-detection provider, where every payment request triggered multiple identical fraud-check requests for the same customer session. The team solved the incident by storing short-lived fraud-check responses in Redis for 90 seconds, which significantly decreased repeated external requests and returned payment latency to normal."
+
+
+  "question": Why did an order remain in processing even though payment succeeded?   
+
+  "answer": "The order remained in \"processing\" because an asynchronous order-status worker had temporarily stopped processing messages. Restarting the worker restored normal status updates.
+
+
+   "question": Which ticket involved duplicate notifications, and how was it fixed?
+   "answer": "The ticket that involved duplicate notifications was TKT-8822. It was fixed by adding idempotency checks before sending emails, which stopped the duplicate notifications from being sent. The issue was caused by a retry mechanism that submitted the same notification job more than once."
+
+    "question": Why did the shopping cart become empty after inactivity?
+   "answer": "The shopping cart became empty after inactivity because temporary cart records had reached their configured expiration time."
+   
