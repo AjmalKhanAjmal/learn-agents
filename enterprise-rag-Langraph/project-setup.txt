@@ -1,0 +1,13 @@
+mkdir enterprise-rag-langraph
+cd enterprise-rag-langraph
+mkdir enterprise-rag
+cd enterprise-rag
+.\.venv\Scripts\activate
+
+mkdir app
+New-Item app\__init__.py -ItemType File
+New-Item app\main.py -ItemType File
+
+New-Item requirements.txt
+
+pip install fastapi uvicorn
