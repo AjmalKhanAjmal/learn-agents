@@ -1,0 +1,74 @@
+User Uploads PDF
+        ↓
+upload.py
+        ↓
+Store Original PDF
+        ↓
+Database
+status = PROCESSING
+        ↓
+Background Worker
+        ↓
+Extract Text
+        ↓
+Chunk
+        ↓
+Embeddings
+        ↓
+Pinecone
+        ↓
+BM25
+        ↓
+status = READY
+
+
+
+
+Should we save the PDF at all?
+=================================
+
+Approach 1 — Save the PDF (recommended)
+--------------------------------------
+Upload PDF
+      ↓
+Save PDF
+      ↓
+Extract Text
+      ↓
+Chunk
+      ↓
+Pinecone
+
+Advantages:
+
+You can reprocess the document later.
+You can change the chunking strategy without asking the user to upload again.
+You can regenerate embeddings if you switch embedding models.
+
+
+Approach 2 — Don't save the PDF
+--------------------------------------
+Upload PDF
+      ↓
+Read directly
+      ↓
+Extract Text
+      ↓
+Chunk
+      ↓
+Pinecone
+      ↓
+Delete file
+
+Advantages:
+
+Uses less disk space.
+Simpler if you never need the original file again.
+
+Disadvantages:
+
+If tomorrow you decide:
+
+"I want to compare Recursive Chunking and Semantic Chunking."
+
+You can't, because the original PDF is gone. The user would have to upload it again.
