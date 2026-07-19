@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from app.rag.extractor import extract_to_text
 from langchain_text_splitters import RecursiveCharacterTextSplitter  
+from app.rag.splitter import split_text
 
 
 
@@ -55,6 +56,8 @@ async def upload_document(
         file_content = await file.read()
         
         text_content = extract_to_text(file.file)
+        chunks =split_text(text_content) 
+        
         # Save file locally
         # with open(
         #     file_path,
@@ -68,7 +71,8 @@ async def upload_document(
             "status": "success",
             "message": "PDF uploaded successfully",
             "file_name": file.filename,
-            "file_path": text_content
+            "file_path": text_content,
+            "chunks " : chunks
         }
 
     except Exception as error:

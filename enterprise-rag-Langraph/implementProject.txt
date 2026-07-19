@@ -1,3 +1,46 @@
+enterprise-rag/
+│
+├── app/
+│
+├── api/
+│   └── routes/
+│       └── upload.py
+│
+├── services/
+│   └── upload_service.py
+│
+├── rag/
+│   ├── extractor.py
+│   ├── cleaner.py
+│   ├── splitter.py
+│   ├── embedder.py
+│   ├── vector_store.py
+│   └── bm25_store.py
+│
+├── core/
+│   ├── config.py
+│   ├── logger.py
+│   └── exceptions.py
+│
+├── schemas/
+│   └── upload.py
+│
+├── uploads/
+│
+├── tests/
+│
+└── main.py
+
+
+
+
+
+
+
+
+
+
+
 User Uploads PDF
         ↓
 upload.py
