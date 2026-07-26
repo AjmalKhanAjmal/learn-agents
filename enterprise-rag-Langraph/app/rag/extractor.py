@@ -111,3 +111,4 @@ class PDFExtractor:
             raise PDFExtractionError(
                 str(error)
             ) from error
+
