@@ -29,3 +29,21 @@ def get_upload_service():
         # embedder=embedder,
         # vector_store=vector_store,
     )
+from app.services.file_storage_service import FileStorageService 
+from app.services.upload_service import UploadService 
+from app.rag.extractor import PDFExtractor 
+# from app.rag.cleaner import TextCleaner 
+# from app.rag.splitter import TextSplitter 
+# from app.rag.embedder import EmbeddingService 
+# from app.rag.vector_store import VectorStore 
+def get_upload_service(): 
+    storage = FileStorageService()
+    extractor =  PDFExtractor()
+    return UploadService( storage=storage,
+                         extractor = extractor)
+
+
+
+
+
+

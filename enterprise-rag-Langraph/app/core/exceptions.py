@@ -25,14 +25,14 @@ class ValidationError(ApplicationError):
     default_message = "Validation failed"
 
 
-# class FileStorageError(ApplicationError):
+class FileStorageError(ApplicationError):
 
-#     default_message = "Unable to store uploaded file"
+    default_message = "Unable to store uploaded file"
 
 
-# class PDFExtractionError(ApplicationError):
+class PDFExtractionError(ApplicationError):
 
-#     default_message = "Unable to extract PDF text"
+    default_message = "Unable to extract PDF text"
 
 
 # class TextCleaningError(ApplicationError):
