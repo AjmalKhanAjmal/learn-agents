@@ -13,7 +13,7 @@
     
 
 from pathlib import Path
-
+''
 from pypdf import PdfReader
 from pypdf.errors import PdfReadError
 
@@ -43,7 +43,7 @@ class PDFExtractor:
         pdf_path = Path(file_path)
 
         if not pdf_path.exists():
-
+ 
             raise PDFExtractionError(
                 f"PDF not found : {pdf_path}"
             )

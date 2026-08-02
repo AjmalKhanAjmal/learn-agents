@@ -19,6 +19,7 @@ class UploadResponse(BaseModel):
     )
     
     path :str
+    cleaned_data :str
     # file_name: str = Field(
     #     description="Original uploaded filename"
     # )
