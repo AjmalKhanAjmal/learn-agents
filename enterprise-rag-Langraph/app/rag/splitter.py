@@ -1,9 +1,6 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from abc import abstractmethod
 
-def split_text(text):
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=50
-    )
-
-    return splitter.split_text(text)
+class BaseTextSplitter():
+    @abstractmethod
+    def split(self,text:str)-> list[str]:
+        pass
