@@ -3,14 +3,17 @@ from pydantic import ValidationError
 from app.core.exceptions import ApplicationError
 from app.core.logger import logger
 from app.schemas.upload import UploadResponse
+
 # from app.rag.cleaner import TextCleaner
+
 
 class UploadService:
 
-    def __init__(self, storage,extractor,cleaner):
+    def __init__(self, storage,extractor,cleaner,RecursiveSplitter):
         self.storage = storage
         self.extractor = extractor
         self.cleaner = cleaner
+        self.recursiveSplitter = RecursiveSplitter
 
     def upload(self, upload_file):
 
@@ -22,6 +25,9 @@ class UploadService:
             extracted_text = self.extractor.extract(saved_path)
             
             cleaned_data = self.cleaner.clean(extracted_text)
+            
+            splitted_data = self.recursiveSplitter.split(cleaned_data)
+            
             # print("extracted test ")
             
             logger.info(
@@ -32,7 +38,8 @@ class UploadService:
                 message="File uploaded successfully",
                 path=str(saved_path),
                 uploaded_at=datetime.now(),
-                cleaned_data = cleaned_data
+                # cleaned_data = cleaned_data,
+                splitted_data = splitted_data
             )
 
         except ValidationError as error:
