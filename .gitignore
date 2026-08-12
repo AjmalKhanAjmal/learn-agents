@@ -3,6 +3,10 @@
 **/__pycache__/
 **/*.pyc
 
+**/venv/
+
+*.pyc
+
 # Node
 **/node_modules/
 **/dist/
