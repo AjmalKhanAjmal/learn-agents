@@ -1,0 +1,57 @@
+from abc import abstractmethod
+
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_pinecone import PineconeVectorStore
+from pinecone import Pinecone
+from langchain_core.documents import Document
+from app.core.config import settings
+from uuid import uuid4
+
+class BaseVectorStore():
+    @abstractmethod
+    def add_documents(self):
+        pass
+
+class PineconeVectorStoreService(BaseVectorStore):
+    def __init__(self):
+        self.pc = Pinecone(
+            api_key=settings.PINECONE_API_KEY
+        )
+        self.index = self.pc.Index(
+            settings.PINECONE_INDEX
+        )
+        
+        self.embeddings = HuggingFaceEmbeddings(
+            model_name=settings.EMBEDDING_MODEL
+        )
+        
+        # self.vector_store = PineconeVectorStore(
+        #     index = self.index,
+        #     embedding=self.embeddings
+        # )# try by removing keys
+        
+        self.vector_store = PineconeVectorStore(
+                    embedding=self.embeddings,
+                    index = self.index
+                )# try by removing keys
+    def post_documents(self,documents:list[Document]) -> int:
+        try:
+            ids = [
+                str(uuid4())
+                for _ in documents
+            ]
+            # chucks = [
+            # Document(page_content=chunk)
+            # for chunk in documents  
+            # ]
+            data = self.vector_store.add_documents(
+                documents = documents,
+                ids = ids
+            )
+            return data
+        except Exception as error:
+            raise error
+            
+            
+        
+        

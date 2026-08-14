@@ -16,10 +16,15 @@ class RecursiveTextSplitter(BaseTextSplitter):
         )
     
     def split(self,text:str)->list[str]:
+        print("split --1 ")
         try:   
+           print("split --2 ")
+            
            documents = self.splitterrrr.create_documents(
                 [text]
             )
+           print("split -- 3")
+           
            chunks = [
                 document.page_content
                 for document in documents

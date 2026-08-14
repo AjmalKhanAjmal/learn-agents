@@ -9,11 +9,12 @@ from app.schemas.upload import UploadResponse
 
 class UploadService:
 
-    def __init__(self, storage,extractor,cleaner,RecursiveSplitter):
+    def __init__(self, storage,extractor,cleaner,RecursiveSplitter,pineconeVectorStore):
         self.storage = storage
         self.extractor = extractor
         self.cleaner = cleaner
         self.recursiveSplitter = RecursiveSplitter
+        self.pineconeVectorStore = pineconeVectorStore
 
     def upload(self, upload_file):
 
@@ -28,6 +29,7 @@ class UploadService:
             
             splitted_data = self.recursiveSplitter.split(cleaned_data)
             
+            vectore_store = self.pineconeVectorStore.post_documents(splitted_data)
             # print("extracted test ")
             
             logger.info(
@@ -39,7 +41,8 @@ class UploadService:
                 path=str(saved_path),
                 uploaded_at=datetime.now(),
                 # cleaned_data = cleaned_data,
-                splitted_data = splitted_data
+                splitted_data = splitted_data,
+                vectore_store = vectore_store
             )
 
         except ValidationError as error:
