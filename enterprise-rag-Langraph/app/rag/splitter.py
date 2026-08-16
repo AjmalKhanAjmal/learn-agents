@@ -16,14 +16,22 @@ class RecursiveTextSplitter(BaseTextSplitter):
         )
     
     def split(self,text:str)->list[str]:
-        print("split --1 ")
         try:   
-           print("split --2 ")
-            
            documents = self.splitterrrr.create_documents(
                 [text]
             )
-           print("split -- 3")
+    #        documents[0]['metadata'] ={
+    #     "document_id": "document_id_123",
+    #     "page_number": 5,
+    #     "chunk_index": 2
+    # }
+           
+#            documents[0].metadata = {
+#     "document_id": "document_id_123",
+#     "page_number": 5,
+#     "chunk_index": 2
+# }
+         
            
            chunks = [
                 document.page_content
@@ -35,7 +43,9 @@ class RecursiveTextSplitter(BaseTextSplitter):
                 len(chunks)
             )
            
-           return chunks
+        #    return chunks
+           return documents
+        
         except Exception as err:
             return err
 

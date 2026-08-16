@@ -1,29 +1,30 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
-from langchain_huggingface import HuggingFaceEmbeddings
+# from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone
 from langchain_core.documents import Document
 from app.core.config import settings
 from uuid import uuid4
 
-class BaseVectorStore():
+class BaseVectorStore(ABC):
     @abstractmethod
     def add_documents(self):
         pass
 
 class PineconeVectorStoreService(BaseVectorStore):
-    def __init__(self):
+    def __init__(self,embeddings):
         self.pc = Pinecone(
             api_key=settings.PINECONE_API_KEY
         )
         self.index = self.pc.Index(
             settings.PINECONE_INDEX
         )
+        self.embeddings = embeddings
         
-        self.embeddings = HuggingFaceEmbeddings(
-            model_name=settings.EMBEDDING_MODEL
-        )
+        # self.embeddings = HuggingFaceEmbeddings(
+        #     model_name=settings.EMBEDDING_MODEL
+        # )
         
         # self.vector_store = PineconeVectorStore(
         #     index = self.index,
@@ -34,7 +35,7 @@ class PineconeVectorStoreService(BaseVectorStore):
                     embedding=self.embeddings,
                     index = self.index
                 )# try by removing keys
-    def post_documents(self,documents:list[Document]) -> int:
+    def add_documents(self,documents:list[Document]) -> int:
         try:
             ids = [
                 str(uuid4())
@@ -48,6 +49,11 @@ class PineconeVectorStoreService(BaseVectorStore):
                 documents = documents,
                 ids = ids
             )
+            
+#             data =  self.index.delete(
+#     delete_all=True
+# )
+            
             return data
         except Exception as error:
             raise error

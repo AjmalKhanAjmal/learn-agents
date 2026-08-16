@@ -4,7 +4,7 @@ from app.services.upload_service import UploadService
 from app.rag.extractor import PDFExtractor
 from app.rag.cleaner import TextCleaner
 from app.rag.splitter import RecursiveTextSplitter
-
+from app.rag.embedder import SentenceTransformerEmbedder
 
 # from app.rag.splitter import TextSplitter
 # from app.rag.embedder import EmbeddingService
@@ -14,8 +14,11 @@ def get_upload_service():
     extractor = PDFExtractor()
     cleaner = TextCleaner()
     RecursiveSplitter = RecursiveTextSplitter()
-    pineconeVectorStore = PineconeVectorStoreService()
-
+    embedding_service = SentenceTransformerEmbedder()
+    embeddings = embedding_service.embed_documents()
+    
+    pineconeVectorStore = PineconeVectorStoreService(embeddings = embeddings)
+    
     return UploadService(
         storage=storage,
         extractor=extractor,

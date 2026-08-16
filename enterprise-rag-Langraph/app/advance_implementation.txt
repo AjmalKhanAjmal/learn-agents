@@ -1,0 +1,30 @@
+embedder.py
+======================
+
+For very high-throughput systems, I would extend this with:
+
+Lazy model initialization to reduce startup time.
+Batch-size configuration to optimize GPU/CPU utilization.
+Health checks to verify the model is loaded correctly.
+Caching for repeated chunks.
+An asynchronous embedding queue for long-running ingestion jobs.
+Metrics (latency, throughput, failures) exported to Prometheus or OpenTelemetry.
+
+
+VectorStore : 
+==============
+
+
+❌ Needs Improvement                                                    
+
+Duplicate embedding creation (HuggingFaceEmbeddings in vector_store.py while embedder.py already exists).
+Tight coupling to LangChain's embedding wrapper.
+No support for metadata-rich documents.
+No batching for very large uploads.
+No namespace support in Pinecone.
+No idempotency (re-uploading the same document creates duplicate vectors).
+
+
+
+
+implemnt raw embedding  

@@ -29,8 +29,8 @@ class UploadService:
             
             splitted_data = self.recursiveSplitter.split(cleaned_data)
             
-            vectore_store = self.pineconeVectorStore.post_documents(splitted_data)
-            # print("extracted test ")
+            vectore_store = self.pineconeVectorStore.add_documents(splitted_data)
+            # print("extracted test ") 
             
             logger.info(
                 "PDF text extracted successfully"
@@ -59,3 +59,6 @@ class UploadService:
 
             logger.exception("Unexpected error")
             raise
+
+
+

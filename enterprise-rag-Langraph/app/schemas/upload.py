@@ -21,7 +21,7 @@ class UploadResponse(BaseModel):
     path :str
     cleaned_data :str | None = None
     splitted_data : list
-    vectore_store :str 
+    vectore_store :list 
     # file_name: str = Field(
     #     description="Original uploaded filename"
     # )
