@@ -25,6 +25,11 @@ No namespace support in Pinecone.
 No idempotency (re-uploading the same document creates duplicate vectors).
 
 
+bm25_store.py
 
+Needs improvement:
 
-implemnt raw embedding  
+Tokenization with .split() is simplistic. Production systems often use language-aware tokenizers, stemming, stop-word removal, or libraries like spaCy.
+The BM25 index is in-memory. If the application restarts, it disappears. Production systems either rebuild it or persist it.
+No metadata is stored alongside documents.
+No support for incremental updates (adding/removing documents without rebuilding).

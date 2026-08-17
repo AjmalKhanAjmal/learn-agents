@@ -9,12 +9,13 @@ from app.schemas.upload import UploadResponse
 
 class UploadService:
 
-    def __init__(self, storage,extractor,cleaner,RecursiveSplitter,pineconeVectorStore):
+    def __init__(self, storage,extractor,cleaner,RecursiveSplitter,pineconeVectorStore,bm25Store):
         self.storage = storage
         self.extractor = extractor
         self.cleaner = cleaner
         self.recursiveSplitter = RecursiveSplitter
         self.pineconeVectorStore = pineconeVectorStore
+        self.bm25_store = bm25Store
 
     def upload(self, upload_file):
 
@@ -22,7 +23,6 @@ class UploadService:
             # 1. Save uploaded file
             saved_path = self.storage.save(upload_file)
              # 2. Extract text from PDF
-             
             extracted_text = self.extractor.extract(saved_path)
             
             cleaned_data = self.cleaner.clean(extracted_text)
@@ -31,6 +31,7 @@ class UploadService:
             
             vectore_store = self.pineconeVectorStore.add_documents(splitted_data)
             # print("extracted test ") 
+            bm25_store = self.bm25_store.create_index(splitted_data)
             
             logger.info(
                 "PDF text extracted successfully"
@@ -39,10 +40,12 @@ class UploadService:
                 status="success",
                 message="File uploaded successfully",
                 path=str(saved_path),
-                uploaded_at=datetime.now(),
+                uploaded_at=datetime.now()
+                ,
                 # cleaned_data = cleaned_data,
                 splitted_data = splitted_data,
-                vectore_store = vectore_store
+                vectore_store = vectore_store,
+                bm25_store =bm25_store
             )
 
         except ValidationError as error:

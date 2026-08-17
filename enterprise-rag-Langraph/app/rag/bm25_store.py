@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from rank_bm25 import BM25Okapi
 
 from app.core.logger import logger
-from app.core.exceptions import BM25Error
+# from app.core.exceptions import BM25Error
 
 
 class BaseKeywordStore(ABC):
@@ -50,9 +50,10 @@ class BM25Store(BaseKeywordStore):
             )
 
             tokenized = [
-                doc.lower().split()
+                doc.page_content.lower().split()
                 for doc in documents
             ]
+            
 
             self._index = BM25Okapi(
                 tokenized
@@ -72,10 +73,11 @@ class BM25Store(BaseKeywordStore):
             logger.exception(
                 "BM25 indexing failed."
             )
-
-            raise BM25Error(
-                str(error)
-            ) from error
+            
+            raise error
+            # raise BM25Error(
+            #     str(error)
+            # ) from error
 
     def search(
         self,
