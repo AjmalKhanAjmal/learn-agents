@@ -11,6 +11,10 @@ class BaseVectorStore(ABC):
     @abstractmethod
     def add_documents(self):
         pass
+    
+    @abstractmethod
+    def similarity_search(self,query:str,top_k:int = 3,score_threshold:float | None = None)-> list[tuple[Document, float]]:
+        pass
 
 class PineconeVectorStoreService(BaseVectorStore):
     def __init__(self,embeddings):
@@ -59,5 +63,7 @@ class PineconeVectorStoreService(BaseVectorStore):
             raise error
             
             
+    def similarity_search(self,query,top_k,score_threshold):
+        
         
         
