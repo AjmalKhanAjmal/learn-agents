@@ -6,14 +6,14 @@ from pinecone import Pinecone
 from langchain_core.documents import Document
 from app.core.config import settings
 from uuid import uuid4
+from app.core.logger import logger
 
 class BaseVectorStore(ABC):
     @abstractmethod
     def add_documents(self):
         pass
-    
     @abstractmethod
-    def similarity_search(self,query:str,top_k:int = 3,score_threshold:float | None = None)-> list[tuple[Document, float]]:
+    def similarity_search(self,query:str,top_k:int=3,score_threshold:float | None = None):
         pass
 
 class PineconeVectorStoreService(BaseVectorStore):
@@ -60,10 +60,14 @@ class PineconeVectorStoreService(BaseVectorStore):
             
             return data
         except Exception as error:
+            raise error  
+        
+    def similarity_search(self,query:str,top_k:int=3,score_threshold:float | None = None):
+        try:
+            logger.info("Runnning pinecone similarity search.")
+            results = (self.vector_store.similarity_search_with_score(
+                query = query,
+                kDASCASA = top_k
+            ))
+        except Exception as error:
             raise error
-            
-            
-    def similarity_search(self,query,top_k,score_threshold):
-        
-        
-        
