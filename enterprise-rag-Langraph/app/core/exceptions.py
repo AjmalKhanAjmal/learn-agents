@@ -58,3 +58,7 @@ class PDFExtractionError(ApplicationError):
 # class BM25Error(ApplicationError):
 
 #     default_message = "Unable to build BM25 index"
+
+
+class RetrievalServiceError(ApplicationError):
+    default_message = "Unable to retrive data"

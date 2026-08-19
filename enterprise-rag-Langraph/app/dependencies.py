@@ -6,35 +6,50 @@ from app.rag.extractor import PDFExtractor
 from app.rag.cleaner import TextCleaner
 from app.rag.splitter import RecursiveTextSplitter
 from app.rag.embedder import SentenceTransformerEmbedder
-from fastapi import HTTPException 
+from fastapi import HTTPException
+from app.services.retrieval_service import RetrievalService
+
+
 # from app.rag.splitter import TextSplitter
 # from app.rag.embedder import EmbeddingService
 # from app.rag.vector_store import VectorStore
 def get_upload_service():
     try:
-            storage = FileStorageService()
-            extractor = PDFExtractor()
-            cleaner = TextCleaner()
-            RecursiveSplitter = RecursiveTextSplitter()
-            embedding_service = SentenceTransformerEmbedder()
-            embeddings = embedding_service.get_embeddings()
-            pineconeVectorStore = PineconeVectorStoreService(embeddings = embeddings)
-            bm25Store = BM25Store()
-            return UploadService(
-                storage=storage,
-                extractor=extractor,
-                cleaner=cleaner,
-                RecursiveSplitter=RecursiveSplitter,
-                pineconeVectorStore=pineconeVectorStore,
-                bm25Store = bm25Store        
-            )
+        storage = FileStorageService()
+        extractor = PDFExtractor()
+        cleaner = TextCleaner()
+        RecursiveSplitter = RecursiveTextSplitter()
+        embedding_service = SentenceTransformerEmbedder()
+        embeddings = embedding_service.get_embeddings()
+        pineconeVectorStore = PineconeVectorStoreService(embeddings=embeddings)
+        bm25Store = BM25Store()
+        return UploadService(
+            storage=storage,
+            extractor=extractor,
+            cleaner=cleaner,
+            RecursiveSplitter=RecursiveSplitter,
+            pineconeVectorStore=pineconeVectorStore,
+            bm25Store=bm25Store,
+        )
     except Exception as error:
-        raise HTTPException( 
-            status_code=500, # why this showing error for api response
+        raise HTTPException(
+            status_code=500,  # why this showing error for api response
             # detail="Failed to initialize upload service."
-            detail=str(error)
+            detail=str(error),
         )
         # raise error // why this one not showing error for api response
 
 
-
+def get_retrieval_service():
+    try:
+        embedding_service = SentenceTransformerEmbedder()
+        embeddings = embedding_service.get_embeddings()
+        pincone_vectore = PineconeVectorStoreService(embeddings=embeddings)
+        return RetrievalService(vector_store=pincone_vectore)
+        # get_embeddings
+    except Exception as error:
+        raise HTTPException(
+            status_code=500,  # why this showing error for api response
+            # detail="Failed to initialize upload service."
+            detail=str(error),
+        )

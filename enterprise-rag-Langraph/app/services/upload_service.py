@@ -9,7 +9,15 @@ from app.schemas.upload import UploadResponse
 
 class UploadService:
 
-    def __init__(self, storage,extractor,cleaner,RecursiveSplitter,pineconeVectorStore,bm25Store):
+    def __init__(
+        self,
+        storage,
+        extractor,
+        cleaner,
+        RecursiveSplitter,
+        pineconeVectorStore,
+        bm25Store,
+    ):
         self.storage = storage
         self.extractor = extractor
         self.cleaner = cleaner
@@ -22,30 +30,27 @@ class UploadService:
         try:
             # 1. Save uploaded file
             saved_path = self.storage.save(upload_file)
-             # 2. Extract text from PDF
+            # 2. Extract text from PDF
             extracted_text = self.extractor.extract(saved_path)
-            
+
             cleaned_data = self.cleaner.clean(extracted_text)
-            
+
             splitted_data = self.recursiveSplitter.split(cleaned_data)
-            
+
             vectore_store = self.pineconeVectorStore.add_documents(splitted_data)
-            # print("extracted test ") 
+            # print("extracted test ")
             bm25_store = self.bm25_store.create_index(splitted_data)
-            
-            logger.info(
-                "PDF text extracted successfully"
-            )
+
+            logger.info("PDF text extracted successfully")
             return UploadResponse(
                 status="success",
                 message="File uploaded successfully",
                 path=str(saved_path),
-                uploaded_at=datetime.now()
-                ,
+                uploaded_at=datetime.now(),
                 # cleaned_data = cleaned_data,
-                splitted_data = splitted_data,
-                vectore_store = vectore_store,
-                bm25_store =bm25_store
+                splitted_data=splitted_data,
+                vectore_store=vectore_store,
+                bm25_store=bm25_store,
             )
 
         except ValidationError as error:
@@ -62,6 +67,3 @@ class UploadService:
 
             logger.exception("Unexpected error")
             raise
-
-
-
