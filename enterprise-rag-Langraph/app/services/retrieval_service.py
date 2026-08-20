@@ -14,8 +14,15 @@ class RetrievalService:
             logger.info("Started retrivel for query")
             results = self.vector_store.similarity_search(query, top_k, score_threshold)
             logger.info("Retrieving completed ", len(results))
-            # return results
-            return RetrievalResponse(query=query, data=results)
+
+            return results
+        # {
+        #         "query": query,
+        #         "data": results,
+        #         "secret": "THIS SHOULD NOT BE IN PUBLIC RESPONSE",
+        #     }
+        # return RetrievalResponse(query=query)
+
         except Exception as error:
             logger.error("Error while retriving , ", str(error))
             # raise error

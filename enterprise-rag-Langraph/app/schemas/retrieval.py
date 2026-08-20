@@ -1,7 +1,30 @@
 from pydantic import BaseModel, ConfigDict
 
 
-class RetrievalResponse(BaseModel):
+class RetrievalRequest(BaseModel):
     query: str
-    data: list[str]
+    top_k: int
+    score_threshold: float
     model_config = ConfigDict(from_attributes=True)
+
+
+# class RetrievalResponse(BaseModel):
+#     query: str
+#     data: list
+#     # model_config = ConfigDict(from_attributes=True)
+
+
+class RetrievedChunk(BaseModel):
+
+    chunk_id: str
+    content: str
+    score: float
+    metadata: dict = {}
+
+
+class RetrievalResponse(BaseModel):
+
+    query: str
+    results: list[RetrievedChunk]
+    total_results: int
+    # model_config = ConfigDict(from_attributes=True)
