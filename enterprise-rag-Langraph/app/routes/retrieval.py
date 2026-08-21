@@ -19,7 +19,11 @@ def search(
 ):
     try:
         retrieved_data = service.retrieve(
-            request.query, request.top_k, request.score_threshold
+            request.query,
+            request.tenant_id,
+            request.document_id,
+            request.top_k,
+            request.score_threshold,
         )
         logger.info("started looping retrived documents")
         results = []
@@ -27,14 +31,17 @@ def search(
         for document, score in retrieved_data:
             results.append(
                 RetrievedChunk(
-                    chunk_id=document.id, content=document.page_content, score=score
+                    chunk_id=document.id,
+                    content=document.page_content,
+                    score=score,
+                    metadata=document.metadata,
                 )
             )
         return RetrievalResponse(
             query=request.query, results=results, total_results=len(results)
         )
     except Exception as error:
-        raise HTTPException(status_code=500, detail=str(error))
+        raise HTTPException(status_code=500, detail=error)
     # except Exception as e :
     #         raise HTTPException(
     #             status_code=500,

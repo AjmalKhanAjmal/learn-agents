@@ -3,6 +3,7 @@ from pydantic import ValidationError
 from app.core.exceptions import ApplicationError
 from app.core.logger import logger
 from app.schemas.upload import UploadResponse
+from app.rag.document_builder import DocumentBuilder
 
 # from app.rag.cleaner import TextCleaner
 
@@ -37,7 +38,11 @@ class UploadService:
 
             splitted_data = self.recursiveSplitter.split(cleaned_data)
 
-            vectore_store = self.pineconeVectorStore.add_documents(splitted_data)
+            document_builder = DocumentBuilder()
+            documents = document_builder.build(
+                splitted_data, saved_path, "document_123"
+            )
+            vectore_store = self.pineconeVectorStore.add_documents(documents)
             # print("extracted test ")
             bm25_store = self.bm25_store.create_index(splitted_data)
 

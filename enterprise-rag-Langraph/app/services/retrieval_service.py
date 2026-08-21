@@ -8,11 +8,24 @@ class RetrievalService:
         self.vector_store = vector_store
 
     def retrieve(
-        self, query: str, top_k: int = 3, score_threshold: float | None = None
+        self,
+        query: str,
+        tenant_id,
+        document_id,
+        top_k: int = 3,
+        score_threshold: float | None = None,
     ):
         try:
+            metadata_filter = {}
+            if tenant_id is not None or "":
+                metadata_filter["tenant_id"] = tenant_id
+            if document_id is not None or "":
+                metadata_filter["document_id"] = document_id
+
             logger.info("Started retrivel for query")
-            results = self.vector_store.similarity_search(query, top_k, score_threshold)
+            results = self.vector_store.similarity_search(
+                query, metadata_filter, top_k, score_threshold
+            )
             logger.info("Retrieving completed ", len(results))
 
             return results

@@ -40,13 +40,14 @@ class PineconeVectorStoreService(BaseVectorStore):
             embedding=self.embeddings, index=self.index
         )  # try by removing keys
 
-    def add_documents(self, documents: list[Document]) -> int:
+    def add_documents(self, documents: list[Document]) -> list[str]:
         try:
             ids = [str(uuid4()) for _ in documents]
             # chucks = [
             # Document(page_content=chunk)
             # for chunk in documents
             # ]
+
             data = self.vector_store.add_documents(documents=documents, ids=ids)
 
             #             data =  self.index.delete(
@@ -58,12 +59,23 @@ class PineconeVectorStoreService(BaseVectorStore):
             raise error
 
     def similarity_search(
-        self, query: str, top_k: int = 3, score_threshold: float | None = None
+        self,
+        query: str,
+        metadata_filter,
+        top_k: int = 3,
+        score_threshold: float | None = None,
     ):
         try:
-            logger.info("Runnning pinecone similarity search.")
+            logger.info(
+                "Running Pinecone similarity search. query=%s, k=%s, filter=%s",
+                query,
+                top_k,
+                metadata_filter,
+            )
+            # logger.info("Runnning pinecone similarity search.")
+
             results = self.vector_store.similarity_search_with_score(
-                query=query, k=top_k
+                query=query, k=top_k, filter=metadata_filter
             )
 
             if score_threshold is not None:
