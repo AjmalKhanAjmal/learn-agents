@@ -11,3 +11,4 @@ class HybridRetrievalService(BaseHybridRetriever):
     def __init__(self, vector_store, keyword_store):
         self.vector_store = vector_store
         self.keyword_store = keyword_store
+        
