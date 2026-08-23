@@ -55,9 +55,9 @@ class PDFExtractionError(ApplicationError):
 #     default_message = "Unable to store vectors in Pinecone"
 
 
-# class BM25Error(ApplicationError):
+class BM25Error(ApplicationError):
 
-#     default_message = "Unable to build BM25 index"
+    default_message = "Unable to build BM25 index"
 
 
 class RetrievalServiceError(ApplicationError):

@@ -22,7 +22,7 @@ class UploadResponse(BaseModel):
     cleaned_data :str | None = None
     splitted_data : list
     vectore_store :list
-    bm25_store : int
+    bm25_store : int | None = None
     # file_name: str = Field(
     #     description="Original uploaded filename"
     # )

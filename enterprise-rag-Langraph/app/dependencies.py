@@ -8,7 +8,7 @@ from app.rag.splitter import RecursiveTextSplitter
 from app.rag.embedder import SentenceTransformerEmbedder
 from fastapi import HTTPException
 from app.services.retrieval_service import RetrievalService
-
+from app.services.hybrid_retrieval_service import HybridRetrievalService
 
 # from app.rag.splitter import TextSplitter
 # from app.rag.embedder import EmbeddingService
@@ -53,3 +53,19 @@ def get_retrieval_service():
             # detail="Failed to initialize upload service."
             detail=str(error),
         )
+
+
+def get_hybrid_retrieval_service():
+    try:
+        embedding_service = SentenceTransformerEmbedder()
+        embeddings = embedding_service.get_embeddings()
+        pineconeVectorStore = PineconeVectorStoreService(embeddings=embeddings)
+        bm25Store = BM25Store()
+        return HybridRetrievalService(vector_store = pineconeVectorStore,
+                keyword_store = bm25Store)
+    except Exception as error:
+        raise HTTPException(
+                    status_code=500,  # why this showing error for api response
+                    # detail="Failed to initialize upload service."
+                    detail=str(error),
+                )

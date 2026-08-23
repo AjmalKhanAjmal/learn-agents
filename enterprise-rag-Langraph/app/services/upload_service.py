@@ -42,9 +42,14 @@ class UploadService:
             documents = document_builder.build(
                 splitted_data, saved_path, "document_123"
             )
+            
+            bm25_store = self.bm25_store.create_index(documents)
+            
             vectore_store = self.pineconeVectorStore.add_documents(documents)
+            # vectore_store = []
+            
             # print("extracted test ")
-            bm25_store = self.bm25_store.create_index(splitted_data)
+            # bm25_store = self.bm25_store.create_index(splitted_data)
 
             logger.info("PDF text extracted successfully")
             return UploadResponse(

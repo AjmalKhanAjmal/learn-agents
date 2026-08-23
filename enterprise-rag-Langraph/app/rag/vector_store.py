@@ -50,7 +50,7 @@ class PineconeVectorStoreService(BaseVectorStore):
 
             data = self.vector_store.add_documents(documents=documents, ids=ids)
 
-            #             data =  self.index.delete(
+            # data =  self.index.delete(
             #     delete_all=True
             # )
 
@@ -61,7 +61,7 @@ class PineconeVectorStoreService(BaseVectorStore):
     def similarity_search(
         self,
         query: str,
-        metadata_filter,
+        metadata_filter = {},
         top_k: int = 3,
         score_threshold: float | None = None,
     ):

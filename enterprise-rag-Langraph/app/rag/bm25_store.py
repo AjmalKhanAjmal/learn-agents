@@ -1,20 +1,18 @@
 from abc import ABC, abstractmethod
 
 from rank_bm25 import BM25Okapi
-
+from langchain_core.documents import Document
+from app.core.exceptions import BM25Error
 from app.core.logger import logger
-# from app.core.exceptions import BM25Error
+from app.schemas.retrieval import RetrievedChunk
 
 
 class BaseKeywordStore(ABC):
-    """
-    Interface for keyword search providers.
-    """
 
     @abstractmethod
     def create_index(
         self,
-        documents: list[str]
+        documents: list[Document]
     ) -> int:
         pass
 
@@ -23,26 +21,25 @@ class BaseKeywordStore(ABC):
         self,
         query: str,
         top_k: int = 5
-    ) -> list[str]:
+    ) -> list[Document]:
         pass
 
 
 class BM25Store(BaseKeywordStore):
-    """
-    BM25 keyword index.
-    """
 
     def __init__(self):
 
         self._index = None
 
-        self._documents = []
+        self._documents: list[Document] = []
 
     def create_index(
         self,
-        documents: list[str]
+        documents: list[Document]
     ) -> int:
-
+        global _documents_global
+        global _bm25
+        _documents_global = self._documents
         try:
 
             logger.info(
@@ -50,16 +47,23 @@ class BM25Store(BaseKeywordStore):
             )
 
             tokenized = [
-                doc.page_content.lower().split()
-                for doc in documents
+                document.page_content.lower().split()
+                for document in documents
             ]
             
+            
+# chunk - 1 ['novatech', 'enterprise', 'knowledge', ]
+# chunk - 2
+# ['for', 'example,', 'backend', 'engineers',]
+# chunk - 3
+# ['responsibility']  all in one array
 
             self._index = BM25Okapi(
                 tokenized
             )
+            _bm25 = self._index
 
-            self._documents = documents
+            # self._documents = documents
 
             logger.info(
                 "BM25 indexed %d chunks.",
@@ -73,17 +77,16 @@ class BM25Store(BaseKeywordStore):
             logger.exception(
                 "BM25 indexing failed."
             )
-            
-            raise error
-            # raise BM25Error(
-            #     str(error)
-            # ) from error
+
+            raise BM25Error(
+                str(error)
+            ) from error
 
     def search(
         self,
         query: str,
         top_k: int = 5
-    ) -> list[str]:
+    ) -> list[RetrievedChunk]:
 
         if self._index is None:
 
@@ -99,22 +102,46 @@ class BM25Store(BaseKeywordStore):
 
             tokenized_query = query.lower().split()
 
-            scores = self._index.get_scores(
-                tokenized_query
-            )
+            # scores = self._index.get_scores(
+            #     tokenized_query
+            # )
+            
+            scores = _bm25.get_scores(
+                            tokenized_query
+                        )
 
+            # ranked = sorted(
+            #     zip(
+            #         scores,
+            #         self._documents
+            #     ),
+            #     key=lambda item: item[0],
+            #     reverse=True
+            # )
+            
             ranked = sorted(
-                zip(
-                    scores,
-                    self._documents
-                ),
-                reverse=True
-            )
+                            zip(
+                                scores,
+                                _documents_global
+                            ),
+                            key=lambda item: item[0],
+                            reverse=True
+                        )
 
-            return [
-                document
-                for _, document in ranked[:top_k]
-            ]
+            results = []
+
+            for score, document in ranked[:top_k]:
+
+                results.append(
+                    RetrievedChunk(
+                        chunk_id=document.id,
+                        content=document.page_content,
+                        score=float(score),
+                        metadata=document.metadata
+                    )
+                )
+
+            return results
 
         except Exception as error:
 
