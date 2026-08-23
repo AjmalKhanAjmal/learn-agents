@@ -1,23 +1,36 @@
 from abc import abstractmethod, ABC
 
+from app.schemas.retrieval import RetrievedChunk
+
 
 class BaseHybridRetriever(ABC):
     @abstractmethod
     def hybrid_retrievel(self):
         pass
 
-
+ 
 class HybridRetrievalService(BaseHybridRetriever):
-    def __init__(self, vector_store, keyword_store):
+    def __init__(self, vector_store, keyword_store,fusion_service):
         self.vector_store = vector_store
         self.keyword_store = keyword_store
+        self.fusion_service = fusion_service
     
     def hybrid_retrievel(self,query,top_k):
         try:
-            symantic_results =  self.vector_store.similarity_search(
+            semantic_results =  self.vector_store.similarity_search(
                             query=query,
                             top_k=top_k
                         )
+            final_semantic_results = []
+            for document,score in semantic_results:
+                final_semantic_results.append(
+                    RetrievedChunk(
+                        chunk_id=document.metadata['chunk_id'],
+                        content=document.page_content,
+                        score=float(score),
+                        metadata=document.metadata
+                    )
+                )
                     
             keyword_results = self.keyword_store.search (query = query,
                     top_k=top_k)
@@ -28,11 +41,19 @@ class HybridRetrievalService(BaseHybridRetriever):
             # }
             
             hybrid_results = {
-                          "symantic_results":  symantic_results,
+                          "symantic_results":  semantic_results,
                             "keyword_results":keyword_results
                         }
-            
-            return hybrid_results
+            fused_results = (
+                self.fusion_service.fuse(
+                    semantic_results=final_semantic_results,
+                    keyword_results=keyword_results,
+                    top_k=top_k
+                )
+            )
+
+            return fused_results
+            # return hybrid_results
                     
         except Exception as error:
             raise error

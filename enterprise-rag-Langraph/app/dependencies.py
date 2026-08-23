@@ -1,4 +1,5 @@
 from app.rag.bm25_store import BM25Store
+from app.rag.result_fusion import ResultFusionService
 from app.rag.vector_store import PineconeVectorStoreService
 from app.services.file_storage_service import FileStorageService
 from app.services.upload_service import UploadService
@@ -61,8 +62,11 @@ def get_hybrid_retrieval_service():
         embeddings = embedding_service.get_embeddings()
         pineconeVectorStore = PineconeVectorStoreService(embeddings=embeddings)
         bm25Store = BM25Store()
+        fusion_service = ResultFusionService(
+        rrf_constant=60
+    )
         return HybridRetrievalService(vector_store = pineconeVectorStore,
-                keyword_store = bm25Store)
+                keyword_store = bm25Store,fusion_service=fusion_service)
     except Exception as error:
         raise HTTPException(
                     status_code=500,  # why this showing error for api response

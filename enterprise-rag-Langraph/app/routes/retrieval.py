@@ -31,7 +31,7 @@ def search(
         for document, score in retrieved_data:
             results.append(
                 RetrievedChunk(
-                    chunk_id=document.id,
+                    chunk_id=document.metadata['chuck_id'],
                     content=document.page_content,
                     score=score,
                     metadata=document.metadata,

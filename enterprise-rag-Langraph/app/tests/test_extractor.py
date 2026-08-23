@@ -14,42 +14,26 @@
 #     # dataa = splitter    
 
 
-# from app.rag.vector_store import PineconeVectorStoreService
 
-from app.rag.vector_store import PineconeVectorStoreService
-from app.rag.embedder import SentenceTransformerEmbedder
+from app.routes.retrieval import search
+from app.schemas.retrieval import RetrievalRequest
+from app.dependencies import get_retrieval_service
 
+def test_search():
 
+    request = RetrievalRequest(
+        query="What is NovaTech Enterprise Knowledge Base",
+        top_k=5,
+        score_threshold = 0.0
+    )
 
-def test_split():
-  
-  query = "What is vector databases?"
-  embedding_service = SentenceTransformerEmbedder()
-  embeddings = embedding_service.get_embeddings()
-  data = PineconeVectorStoreService(embeddings = embeddings)
+    service = get_retrieval_service()
 
-  results = data.similarity_search(query,3,0.5)
-  print("results : ", results)
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  #   text =  [
-  #   "NovaTech Enterprise Knowledge Base \nSection 1: Company Background \n"
-  # ]
-  #   # texts = [doc.page_content for doc in text]
-    
-  #   print("test.length", len(text))
-    
-  #   data = PineconeVectorStoreService()
-  #   result = data.post_documents(text)
-    
-    
-  #   print("result.length", len(result))
+    response = search(
+        request=request,
+        service=service
+    )
 
-  #   # assert result
+    print(response)
+
+    assert response is not None
