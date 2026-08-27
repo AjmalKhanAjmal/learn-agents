@@ -1,39 +1,19 @@
-# from app.rag import RecursiveTextSplitter
-# from app.rag.extractor import PDFExtractor
+# pytest -s .\app\tests\test_extractor.py
+from app.schemas.retrieval import RetrievedChunk
+from app.rerankers.cross_encoder import CrossEncoderReranker
 
-# def test_extract():
-#     splitter =  RecursiveTextSplitter()
-#     # final_data = splitter.split()
-#     final_data = splitter.split("Hello World")
-#     return final_data
-#     # extractor = PDFExtractor()
+# def test_reranking():
+#     reranker_obj = CrossEncoderReranker("medel_reramker",512,16)
 
-#     # text = extractor.extract("uploads/sample.pdf")
+#     print(reranker_obj)
+    
+    
+def test_reranking():
 
-#     # assert len(text) > 0
-#     # dataa = splitter    
-
-
-
-from app.routes.retrieval import search
-from app.schemas.retrieval import RetrievalRequest
-from app.dependencies import get_retrieval_service
-
-def test_search():
-
-    request = RetrievalRequest(
-        query="What is NovaTech Enterprise Knowledge Base",
-        top_k=5,
-        score_threshold = 0.0
+    reranker_obj = CrossEncoderReranker(
+        model_name="cross-encoder/ms-marco-MiniLM-L-6-v2"
+        # batch_size=16,
+        # max_length=512
     )
 
-    service = get_retrieval_service()
-
-    response = search(
-        request=request,
-        service=service
-    )
-
-    print(response)
-
-    assert response is not None
+    print(reranker_obj)
