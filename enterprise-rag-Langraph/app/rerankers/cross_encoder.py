@@ -13,20 +13,33 @@ class CrossEncoderReranker(BaseReranker):
         self.batch_size = batch_size
 
         try:
-            logger.info("Loading ranker model ", self.model_name)
+            # logger.info("Loading ranker model ", self.model_name)
+            logger.info("Loading ranker model %s", self.model_name)
+
             self.model = CrossEncoder(model_name, max_length=max_length)
             logger.info("Reranker model loaded successfully.")
         except Exception as error:
             raise error
 
-    def rerank(
-        self, query: str, documents: list[RetrievedChunk]
-    ) -> list[tuple[RetrievedChunk, float]]:
+    def rerank(self, query: str, documents: list[RetrievedChunk]):
+        # -> list[tuple[RetrievedChunk, float]]:
         try:
             logger.info("starting reranking for %d documents", len(documents))
             # pairs
 
+            # pairs = [[query, document.content] for document in documents]
             pairs = [[query, document.content] for document in documents]
+
+            scores = self.model.predict(
+                pairs, batch_size=self.batch_size, show_progress_bar=False
+            )
+
+            ranked = [
+                [document, float(score)] for document, score in zip(documents, scores)
+            ]
+
+        
+            return {"scores": scores, "ranked": ranked}
 
         except Exception as error:
             raise error
