@@ -21,7 +21,7 @@ class CrossEncoderReranker(BaseReranker):
         except Exception as error:
             raise error
 
-    def rerank(self, query: str, documents: list[RetrievedChunk]):
+    def rerank(self, query: str, documents: list[RetrievedChunk])->list[tuple[RetrievedChunk,float]]:
         # -> list[tuple[RetrievedChunk, float]]:
         try:
             logger.info("starting reranking for %d documents", len(documents))
@@ -34,12 +34,24 @@ class CrossEncoderReranker(BaseReranker):
                 pairs, batch_size=self.batch_size, show_progress_bar=False
             )
 
-            ranked = [
+            reranked = [
                 [document, float(score)] for document, score in zip(documents, scores)
             ]
+            
+            
+            def get_score(item):
+                return item[1]
 
-        
-            return {"scores": scores, "ranked": ranked}
+
+            reranked.sort(
+                key=get_score,
+                reverse=True
+            )
+                    # reranked.sort(
+#             key=lambda item: item[1],
+#             reverse=True
+#         )
+            return reranked
 
         except Exception as error:
             raise error

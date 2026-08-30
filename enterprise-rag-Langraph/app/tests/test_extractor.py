@@ -1,6 +1,8 @@
 # pytest -s .\app\tests\test_extractor.py
 from app.schemas.retrieval import RetrievedChunk
 from app.rerankers.cross_encoder import CrossEncoderReranker
+from app.services.reranking_service import RerankerService
+# class RerankerService(crossEncoder):
 
 # def test_reranking():
 #     reranker_obj = CrossEncoderReranker("medel_reramker",512,16)
@@ -57,8 +59,10 @@ def test_reranking():
         ]
 
         _documents = [RetrievedChunk(**document) for document in raw_documents]
-
-        results = reranker_obj.rerank(query="what is Fast API", documents=_documents)
+        rerank_service_obj = RerankerService(reranker = reranker_obj)
+        # results = reranker_obj.rerank(query="what is Fast API", documents=_documents)
+        results = rerank_service_obj.rerankService(query="what is Fast API", documents=_documents)
+        
         print("final_data : ", results)
     except Exception as error:
         print(error)

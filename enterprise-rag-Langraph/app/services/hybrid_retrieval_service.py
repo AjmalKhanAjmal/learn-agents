@@ -10,10 +10,11 @@ class BaseHybridRetriever(ABC):
 
  
 class HybridRetrievalService(BaseHybridRetriever):
-    def __init__(self, vector_store, keyword_store,fusion_service):
+    def __init__(self, vector_store, keyword_store,fusion_service,rerank_service_obj):
         self.vector_store = vector_store
         self.keyword_store = keyword_store
         self.fusion_service = fusion_service
+        self.rerank_service_obj = rerank_service_obj
     
     def hybrid_retrievel(self,query,top_k):
         try:
@@ -51,8 +52,10 @@ class HybridRetrievalService(BaseHybridRetriever):
                     top_k=top_k
                 )
             )
+            
+            reranked_results = self.rerank_service_obj.rerankService(query,fused_results)
 
-            return fused_results
+            return reranked_results
             # return hybrid_results
                     
         except Exception as error:

@@ -1,7 +1,9 @@
 from app.rag.bm25_store import BM25Store
 from app.rag.result_fusion import ResultFusionService
 from app.rag.vector_store import PineconeVectorStoreService
+from app.rerankers.cross_encoder import CrossEncoderReranker
 from app.services.file_storage_service import FileStorageService
+from app.services.reranking_service import RerankerService
 from app.services.upload_service import UploadService
 from app.rag.extractor import PDFExtractor
 from app.rag.cleaner import TextCleaner
@@ -64,9 +66,19 @@ def get_hybrid_retrieval_service():
         bm25Store = BM25Store()
         fusion_service = ResultFusionService(
         rrf_constant=60
-    )
+        )
+        reranker_obj = CrossEncoderReranker(
+                        model_name="cross-encoder/ms-marco-MiniLM-L-6-v2", batch_size=16, max_length=512
+                    )
+        rerank_service_obj = RerankerService(reranker = reranker_obj)
+        
+        # reranking = reranker_obj = CrossEncoderReranker(
+        #         model_name="cross-encoder/ms-marco-MiniLM-L-6-v2", batch_size=16, max_length=512
+        #     )
+        
+        
         return HybridRetrievalService(vector_store = pineconeVectorStore,
-                keyword_store = bm25Store,fusion_service=fusion_service)
+                keyword_store = bm25Store,fusion_service=fusion_service,rerank_service_obj = rerank_service_obj)
     except Exception as error:
         raise HTTPException(
                     status_code=500,  # why this showing error for api response

@@ -31,3 +31,14 @@ class RetrievalResponse(BaseModel):
     results: list[RetrievedChunk]
     total_results: int
     # model_config = ConfigDict(from_attributes=True)
+
+
+class RerankResponse(BaseModel):
+    chunk_id : str
+    content : str
+    retrieval_score : float
+    rerank_score : float
+    meta_data : dict
+    
+    
+   
