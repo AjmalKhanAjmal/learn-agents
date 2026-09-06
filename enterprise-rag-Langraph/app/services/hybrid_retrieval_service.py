@@ -54,8 +54,24 @@ class HybridRetrievalService(BaseHybridRetriever):
             )
             
             reranked_results = self.rerank_service_obj.rerankService(query,fused_results)
+            
+            from app.services.context_compressor import ContextCompressor
 
-            return reranked_results
+
+            compressor = ContextCompressor(
+                embedding_model="all-MiniLM-L6-v2",
+                similarity_threshold=0.40,
+                max_tokens=1000,
+                preserve_neighbors=True
+            )
+
+
+            compressed_results = compressor.compress(
+                query=query,
+                documents=reranked_results
+            )
+
+            return compressed_results
             # return hybrid_results
                     
         except Exception as error:
