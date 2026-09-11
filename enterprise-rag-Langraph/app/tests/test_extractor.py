@@ -1,7 +1,9 @@
 # pytest -s .\app\tests\test_extractor.py
+from app.llm.groq_provider import GroqProvider
 from app.schemas.retrieval import RetrievedChunk
 from app.rerankers.cross_encoder import CrossEncoderReranker
 from app.services.reranking_service import RerankerService
+
 # class RerankerService(crossEncoder):
 
 # def test_reranking():
@@ -9,12 +11,12 @@ from app.services.reranking_service import RerankerService
 
 #     print(reranker_obj)
 
+import pytest
 
-def test_reranking():
 
-    reranker_obj = CrossEncoderReranker(
-        model_name="cross-encoder/ms-marco-MiniLM-L-6-v2", batch_size=16, max_length=512
-    )
+@pytest.mark.asyncio
+async def test_reranking():
+
     try:
         raw_documents = [
             {
@@ -58,11 +60,17 @@ def test_reranking():
             },
         ]
 
-        _documents = [RetrievedChunk(**document) for document in raw_documents]
-        rerank_service_obj = RerankerService(reranker = reranker_obj)
-        # results = reranker_obj.rerank(query="what is Fast API", documents=_documents)
-        results = rerank_service_obj.rerankService(query="what is Fast API", documents=_documents)
-        
-        print("final_data : ", results)
+        gro_api_key = ""
+        model_name = "openai/gpt-oss-20b"
+
+        provider = GroqProvider(api_key=gro_api_key, model=model_name)
+
+        response = await provider.generate(
+            system_prompt=("You are a helpful AI assistant."),
+            user_prompt=("Explain what FastAPI is in " "three sentences."),
+            max_output_tokens=200,
+            temperature=0,
+        )
+        print("final_data : ", response)
     except Exception as error:
         print(error)
