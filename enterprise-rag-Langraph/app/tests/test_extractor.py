@@ -2,6 +2,8 @@
 from app.llm.groq_provider import GroqProvider
 from app.schemas.retrieval import RetrievedChunk
 from app.rerankers.cross_encoder import CrossEncoderReranker
+from app.services.conversation_builder import ConversationBuilder
+from app.services.generation_service import GenerationService
 from app.services.reranking_service import RerankerService
 
 # class RerankerService(crossEncoder):
@@ -63,14 +65,44 @@ async def test_reranking():
         gro_api_key = ""
         model_name = "openai/gpt-oss-20b"
 
-        provider = GroqProvider(api_key=gro_api_key, model=model_name)
-
-        response = await provider.generate(
-            system_prompt=("You are a helpful AI assistant."),
-            user_prompt=("Explain what FastAPI is in " "three sentences."),
-            max_output_tokens=200,
-            temperature=0,
-        )
+        # provider = GroqProvider(api_key=gro_api_key, model=model_name)
+        
+        
+        # response = await provider.generate(
+            # system_prompt=("You are a helpful AI assistant."),
+            # user_prompt=("Explain what FastAPI is in " "three sentences."),
+            # max_output_tokens=200,
+            # temperature=0,
+        # )
+        # llm_service = GenerationService(provider)
+        # system_prompt=("You are a helpful AI assistant."),
+        #             user_prompt=("Explain what FastAPI is in " "three sentences."),
+                    
+        # response = await llm_service.generation_service(max_output_tokens=200,
+        #             temperature=0,documents=raw_documents)
+        history = [
+    {
+        "role": "user",
+        "content": "Hello"
+    },
+    {
+        "role": "assistant",
+        "content": ""
+    },
+    {
+        "role": "user",
+        "content": "How are you?"
+    },
+    {
+        "role": "asssist",
+        "content": "heeloo assist?"
+    },
+    {
+        "content": "empty heeloo assist?"
+    }
+]
+        data = ConversationBuilder()
+        response = data.build(history)
         print("final_data : ", response)
     except Exception as error:
         print(error)
