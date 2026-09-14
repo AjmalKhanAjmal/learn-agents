@@ -10,7 +10,7 @@ class contextBuilder:
             
             documents = documents[:self.max_chunks]
             # return documents
-            sections =list[str]
+            sections: list[str] = []
             if not documents:
                 return "No relevant context was retrieved."
             

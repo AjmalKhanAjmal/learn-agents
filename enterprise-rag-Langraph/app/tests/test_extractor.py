@@ -65,7 +65,7 @@ async def test_reranking():
         gro_api_key = ""
         model_name = "openai/gpt-oss-20b"
 
-        # provider = GroqProvider(api_key=gro_api_key, model=model_name)
+        provider = GroqProvider(api_key=gro_api_key, model=model_name)
         
         
         # response = await provider.generate(
@@ -74,35 +74,35 @@ async def test_reranking():
             # max_output_tokens=200,
             # temperature=0,
         # )
-        # llm_service = GenerationService(provider)
+        llm_service = GenerationService(provider)
         # system_prompt=("You are a helpful AI assistant."),
         #             user_prompt=("Explain what FastAPI is in " "three sentences."),
                     
-        # response = await llm_service.generation_service(max_output_tokens=200,
-        #             temperature=0,documents=raw_documents)
-        history = [
-    {
-        "role": "user",
-        "content": "Hello"
-    },
-    {
-        "role": "assistant",
-        "content": ""
-    },
-    {
-        "role": "user",
-        "content": "How are you?"
-    },
-    {
-        "role": "asssist",
-        "content": "heeloo assist?"
-    },
-    {
-        "content": "empty heeloo assist?"
-    }
-]
-        data = ConversationBuilder()
-        response = data.build(history)
+        response = await llm_service.generation_service(max_output_tokens=200,
+                    temperature=0,documents=raw_documents)
+#     history = [
+#     {
+#         "role": "user",
+#         "content": "Hello"
+#     },
+#     {
+#         "role": "assistant",
+#         "content": ""
+#     },
+#     {
+#         "role": "user",
+#         "content": "How are you?"
+#     },
+#     {
+#         "role": "asssist",
+#         "content": "heeloo assist?"
+#     },
+#     {
+#         "content": "empty heeloo assist?"
+#     }
+# ]
+        # data = ConversationBuilder()
+        # response = data.build(history)
         print("final_data : ", response)
     except Exception as error:
         print(error)
