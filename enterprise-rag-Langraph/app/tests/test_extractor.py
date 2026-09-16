@@ -2,6 +2,7 @@
 from app.llm.groq_provider import GroqProvider
 from app.schemas.retrieval import RetrievedChunk
 from app.rerankers.cross_encoder import CrossEncoderReranker
+from app.services.citation_service import CitationService
 from app.services.conversation_builder import ConversationBuilder
 from app.services.generation_service import GenerationService
 from app.services.reranking_service import RerankerService
@@ -66,41 +67,30 @@ async def test_reranking():
         model_name = "openai/gpt-oss-20b"
 
         provider = GroqProvider(api_key=gro_api_key, model=model_name)
-        
-        
+
         # response = await provider.generate(
-            # system_prompt=("You are a helpful AI assistant."),
-            # user_prompt=("Explain what FastAPI is in " "three sentences."),
-            # max_output_tokens=200,
-            # temperature=0,
+        # system_prompt=("You are a helpful AI assistant."),
+        # user_prompt=("Explain what FastAPI is in " "three sentences."),
+        # max_output_tokens=200,
+        # temperature=0,
         # )
         llm_service = GenerationService(provider)
         # system_prompt=("You are a helpful AI assistant."),
         #             user_prompt=("Explain what FastAPI is in " "three sentences."),
-                    
-        response = await llm_service.generation_service(max_output_tokens=200,
-                    temperature=0,documents=raw_documents)
-#     history = [
-#     {
-#         "role": "user",
-#         "content": "Hello"
-#     },
-#     {
-#         "role": "assistant",
-#         "content": ""
-#     },
-#     {
-#         "role": "user",
-#         "content": "How are you?"
-#     },
-#     {
-#         "role": "asssist",
-#         "content": "heeloo assist?"
-#     },
-#     {
-#         "content": "empty heeloo assist?"
-#     }
-# ]
+
+        response = await llm_service.generation_service(
+            max_output_tokens=200, temperature=0, documents=raw_documents
+        )
+        # answer = {
+        #     "text": "NovaTech Enterprise Knowledge Base is an internal repository that houses NovaTech Solutions’ technical manuals, project reports, incident records, and customer‑support documents. It was originally accessed via traditional keyword search, but the company later recognized that exact keyword matching was inadequate for many natural‑language queries, prompting a shift towardmore [chunk:document_123_chunk_263923] advanced search capabilities. [chunk:document_123_chunk_0]",
+        #     "response_id": "chatcmpl-4f9fbd41-f449-42ee-8052-1e59fbc45716",
+        #     "model": "openai/gpt-oss-20b",
+        #     "usage": {"input_tokens": 1320, "output_tokens": 198, "total_tokens": 1518},
+        # }
+
+        # citation_service = CitationService()
+        # response = citation_service.extract(raw_documents, answer["text"])
+
         # data = ConversationBuilder()
         # response = data.build(history)
         print("final_data : ", response)
