@@ -2,19 +2,18 @@ from typing import Any
 
 from app.llm.base import LLMProvider
 from groq import AsyncGroq
- 
- 
+from app.core.config import settings
+
 
 class GroqProvider(LLMProvider):
     def __init__(
         self,
-        api_key: str,
-        model: str,
         timeout: float = 60.0,
     ):
-        self.model = model
+        self.model = settings.GROQ_MODEL
+        self.api_key = settings.GROQ_API_KEY
 
-        self.groq_client = AsyncGroq(api_key=api_key, timeout=timeout)
+        self.groq_client = AsyncGroq(api_key=self.api_key, timeout=timeout)
 
     async def generate(
         self,

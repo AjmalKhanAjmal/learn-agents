@@ -80,10 +80,11 @@ def get_hybrid_retrieval_service():
         #         model_name="cross-encoder/ms-marco-MiniLM-L-6-v2", batch_size=16, max_length=512
         #     )
 
-        gro_api_key = ""
-        model_name = "openai/gpt-oss-20b"
+        # gro_api_key = ""
+        # model_name = "openai/gpt-oss-20b"
 
-        provider = GroqProvider(api_key=gro_api_key, model=model_name)
+        # provider = GroqProvider(api_key=gro_api_key, model=model_name)
+        provider = GroqProvider()
 
         llm_service = GenerationService(provider)
         return HybridRetrievalService(

@@ -10,10 +10,7 @@ class Settings(BaseSettings):
     Values are loaded from .env.
     """
 
-    model_config = SettingsConfigDict(
-        env_file=".env",
-        extra="ignore"
-    )
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     APP_NAME: str = "Enterprise RAG"
 
@@ -35,6 +32,10 @@ class Settings(BaseSettings):
 
     PINECONE_INDEX: str
 
+    GROQ_API_KEY: str
+
+    GROQ_MODEL: str
+
 
 @lru_cache
 def get_settings() -> Settings:
@@ -48,17 +49,14 @@ def get_settings() -> Settings:
 settings = get_settings()
 
 
-
-
 # Interview Note
 # What is @lru_cache?
 
 # @lru_cache is a decorator from Python's functools module that stores the result of a function after its first execution.
 # When the function is called again with the same arguments, Python returns the cached result instead of executing the
-# function again. In FastAPI, it is commonly used with get_settings() to ensure that the Settings object is created 
-# only once and reused throughout the application's lifetime. This improves performance, reduces unnecessary object 
+# function again. In FastAPI, it is commonly used with get_settings() to ensure that the Settings object is created
+# only once and reused throughout the application's lifetime. This improves performance, reduces unnecessary object
 # creation, supports lazy initialization, and integrates well with FastAPI's dependency injection and testing patterns.
-
 
 
 # pydantic-settings is a library used to manage application configuration in a clean, secure, and production-ready way. Instead of manually reading environment variables using os.getenv() throughout the project, we define all configuration values in a single Settings class. This class automatically loads values from the .env file, converts them to the correct data types, and validates them before the application starts. As a result, the code becomes easier to maintain, more organized, and less error-prone.
