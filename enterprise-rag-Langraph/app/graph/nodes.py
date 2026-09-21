@@ -75,7 +75,7 @@ to improve document retrieval.
 Original query:
 {state["query"]}
 
-Previous query:
+Previous query: 
 {state.get("rewritten_query", "")}
 
 Reason:
