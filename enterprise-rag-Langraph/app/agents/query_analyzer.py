@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field
 
 from langchain_core.messages import HumanMessage
 
-from app.generation.service import LLMService
 from app.agents.prompts import QUERY_ANALYSIS_PROMPT
+from app.llm.generic_llm_provider import GenericLLMProvider
 
 
 class QueryAnalysis(BaseModel):
@@ -23,20 +23,17 @@ class QueryAnalyzer:
 
     def __init__(self):
 
-        self.llm = LLMService()
+        self.llm = GenericLLMProvider()
 
-        self.model = self.llm.structured(
-            QueryAnalysis
-        )
+        self.model = self.llm.structured(QueryAnalysis)
 
     def analyze(self, query: str) -> QueryAnalysis:
+        try:
+            prompt = QUERY_ANALYSIS_PROMPT.format(query=query)
 
-        prompt = QUERY_ANALYSIS_PROMPT.format(
-            query=query
-        )
+            return self.model.invoke([HumanMessage(content=prompt)])
+            # return self.model.invoke(prompt)
 
-        return self.model.invoke(
-            [
-                HumanMessage(content=prompt)
-            ]
-        )
+        except Exception as error:
+            raise error
+        # return self.model.invoke([HumanMessage(content=prompt)])

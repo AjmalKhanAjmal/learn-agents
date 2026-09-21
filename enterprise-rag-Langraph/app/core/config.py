@@ -36,6 +36,10 @@ class Settings(BaseSettings):
 
     GROQ_MODEL: str
 
+    LLM_PROVIDER: str
+
+    LLM_TEMPERATURE: int
+
 
 @lru_cache
 def get_settings() -> Settings:

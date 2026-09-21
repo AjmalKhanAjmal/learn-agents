@@ -4,6 +4,8 @@ from app.llm.base import LLMProvider
 from groq import AsyncGroq
 from app.core.config import settings
 
+# from langchain.chat_models import init_chat_model
+
 
 class GroqProvider(LLMProvider):
     def __init__(
@@ -12,6 +14,12 @@ class GroqProvider(LLMProvider):
     ):
         self.model = settings.GROQ_MODEL
         self.api_key = settings.GROQ_API_KEY
+
+        # self.llm = init_chat_model(
+        #     model=self.model,
+        #     model_provider=self.model,
+        #     temperature=self.model,
+        # )
 
         self.groq_client = AsyncGroq(api_key=self.api_key, timeout=timeout)
 
@@ -60,42 +68,6 @@ class GroqProvider(LLMProvider):
 
         except Exception as error:
             raise error
-
-        # if temperature is not None:
-        #     request["temperature"] = temperature
-
-        # try:
-
-        #     response = await self.client.chat.completions.create(
-        #         **request
-        #     )
-
-        #     choice = response.choices[0]
-
-        #     content = choice.message.content or ""
-
-        #     usage = {}
-
-        #     if response.usage:
-
-        #         usage = {
-        #             "input_tokens": (
-        #                 response.usage.prompt_tokens
-        #             ),
-        #             "output_tokens": (
-        #                 response.usage.completion_tokens
-        #             ),
-        #             "total_tokens": (
-        #                 response.usage.total_tokens
-        #             ),
-        #         }
-
-        #     return {
-        #         "text": content,
-        #         "response_id": response.id,
-        #         "model": response.model,
-        #         "usage": usage,
-        #     }
 
     async def stream(
         self,

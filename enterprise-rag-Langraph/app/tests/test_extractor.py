@@ -1,18 +1,5 @@
 # pytest -s .\app\tests\test_extractor.py
-from app.llm.groq_provider import GroqProvider
-from app.schemas.retrieval import RetrievedChunk
-from app.rerankers.cross_encoder import CrossEncoderReranker
-from app.services.citation_service import CitationService
-from app.services.conversation_builder import ConversationBuilder
-from app.services.generation_service import GenerationService
-from app.services.reranking_service import RerankerService
-
-# class RerankerService(crossEncoder):
-
-# def test_reranking():
-#     reranker_obj = CrossEncoderReranker("medel_reramker",512,16)
-
-#     print(reranker_obj)
+from app.agents.query_analyzer import QueryAnalyzer
 
 import pytest
 
@@ -63,36 +50,20 @@ async def test_reranking():
             },
         ]
 
-        gro_api_key = ""
-        model_name = "openai/gpt-oss-20b"
+        # llm_provider = GenericLLMProvider()
 
-        provider = GroqProvider(api_key=gro_api_key, model=model_name)
+        query_analyzer = QueryAnalyzer()
 
-        # response = await provider.generate(
-        # system_prompt=("You are a helpful AI assistant."),
-        # user_prompt=("Explain what FastAPI is in " "three sentences."),
-        # max_output_tokens=200,
-        # temperature=0,
+        # response = query_analyzer.analyze("What is ai?")
+        response = query_analyzer.analyze("What is 10 + 20?")
+        # response = query_analyzer.analyze(
+        #     "Compare the authentication and database technology used by the payment service and order service."
         # )
-        llm_service = GenerationService(provider)
-        # system_prompt=("You are a helpful AI assistant."),
-        #             user_prompt=("Explain what FastAPI is in " "three sentences."),
 
-        response = await llm_service.generation_service(
-            max_output_tokens=200, temperature=0, documents=raw_documents
-        )
-        # answer = {
-        #     "text": "NovaTech Enterprise Knowledge Base is an internal repository that houses NovaTech Solutions’ technical manuals, project reports, incident records, and customer‑support documents. It was originally accessed via traditional keyword search, but the company later recognized that exact keyword matching was inadequate for many natural‑language queries, prompting a shift towardmore [chunk:document_123_chunk_263923] advanced search capabilities. [chunk:document_123_chunk_0]",
-        #     "response_id": "chatcmpl-4f9fbd41-f449-42ee-8052-1e59fbc45716",
-        #     "model": "openai/gpt-oss-20b",
-        #     "usage": {"input_tokens": 1320, "output_tokens": 198, "total_tokens": 1518},
-        # }
+        # response = query_analyzer.analyze(
+        #     "What authentication mechanism does the payment service use?"
+        # )
+        print("final results : ", response)
 
-        # citation_service = CitationService()
-        # response = citation_service.extract(raw_documents, answer["text"])
-
-        # data = ConversationBuilder()
-        # response = data.build(history)
-        print("final_data : ", response)
     except Exception as error:
         print(error)
