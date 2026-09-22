@@ -3,6 +3,8 @@ from app.agents.query_analyzer import QueryAnalyzer
 
 import pytest
 
+from app.graph.builder import build_graph
+
 
 @pytest.mark.asyncio
 async def test_reranking():
@@ -52,18 +54,20 @@ async def test_reranking():
 
         # llm_provider = GenericLLMProvider()
 
-        query_analyzer = QueryAnalyzer()
-
+        # query_analyzer = QueryAnalyzer()
         # response = query_analyzer.analyze("What is ai?")
-        response = query_analyzer.analyze("What is 10 + 20?")
+        # response = query_analyzer.analyze("What is 10 + 20?")
         # response = query_analyzer.analyze(
         #     "Compare the authentication and database technology used by the payment service and order service."
         # )
+        
+      graph = build_graph()
 
-        # response = query_analyzer.analyze(
-        #     "What authentication mechanism does the payment service use?"
-        # )
-        print("final results : ", response)
+response = graph.invoke({
+    "query": "What authentication mechanism does the payment service use?"
+})
+
+print("final results:", response)
 
     except Exception as error:
         print(error)
