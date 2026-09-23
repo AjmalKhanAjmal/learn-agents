@@ -1,26 +1,17 @@
-from app.graph.nodes import analyze_query
-from langgraph.graph import (START,StateGraph)
+from app.graph.nodes import analyze_query, retrieve_documents
+from langgraph.graph import START, StateGraph
 from app.graph.state import AgentState
 
+
 def build_graph():
-    graph =  StateGraph(AgentState)
-    graph.add_node('analyze_query',analyze_query)
-    graph.add_edge(START,analyze_query)
-    
+    graph = StateGraph(AgentState)
+    graph.add_node("analyze_query", analyze_query)
+    graph.add_node("retrieve_documents", retrieve_documents)
+    graph.add_edge(START, "analyze_query")
+    graph.add_edge("analyze_query", "retrieve_documents")
+
     return graph.compile()
     # return graph
-    
-    
-
-
-
-
-
-
-
-
-
-
 
 
 # from langgraph.graph import (

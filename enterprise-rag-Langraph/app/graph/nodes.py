@@ -1,7 +1,15 @@
 from app.agents.query_analyzer import QueryAnalyzer
+from app.dependencies import get_hybrid_retrieval_service
+
+# from app.services.hybrid_retrieval_service import HybridRetrievalService
+# from app.routes.hybrid_retrieval import hybrid_retrieval
+
+# from app.services.hybrid_retrieval_service import HybridRetrievalService
+
+query_analyzer = QueryAnalyzer()
+# hybrid_retrieval_service = HybridRetrievalService()
 
 
-query_analyzer = QueryAnalyzer
 def analyze_query(state):
     result = query_analyzer.analyze(state["query"])
     return {
@@ -10,14 +18,31 @@ def analyze_query(state):
         "requires_multi_hop": result.requires_multi_hop,
         "sub_queries": result.sub_queries,
         "rewritten_query": result.search_query,
-        "retrieval_attempt": 0
+        "retrieval_attempt": 0,
     }
-    
-    
 
 
+async def retrieve_documents(state):
+    query = state.get("rewritten_query") or state["query"]
+    # results = hybrid_retrieval_service.hybrid_retrievel(query=query, top_k=5)
+    service = get_hybrid_retrieval_service()
+
+    results = await service.hybrid_retrievel(query=query, top_k=5)
+    return {"query": query, "reranked_results": results}
 
 
+# def retrieve_documents(state):
+
+#     query = state.get("rewritten_query") or state["query"]
+
+#     results = retriever.search(query=query, k=5)
+
+#     attempt = state.get("retrieval_attempt", 0) + 1
+
+#     return {
+#         "reranked_results": results,
+#         "retrieval_attempt": attempt,
+#     }
 
 
 # from langchain_core.messages import HumanMessage
@@ -30,7 +55,7 @@ def analyze_query(state):
 # retriever = HybridRetriever()
 # llm_service = LLMService()
 
- 
+
 # def analyze_query(state):
 
 #     result = query_analyzer.analyze(state["query"])
@@ -97,7 +122,7 @@ def analyze_query(state):
 # Original query:
 # {state["query"]}
 
-# Previous query: 
+# Previous query:
 # {state.get("rewritten_query", "")}
 
 # Reason:

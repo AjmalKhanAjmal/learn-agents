@@ -60,14 +60,15 @@ async def test_reranking():
         # response = query_analyzer.analyze(
         #     "Compare the authentication and database technology used by the payment service and order service."
         # )
-        
-      graph = build_graph()
 
-response = graph.invoke({
-    "query": "What authentication mechanism does the payment service use?"
-})
+        graph = build_graph()
 
-print("final results:", response)
+        # response = graph.invoke(
+        #     {"query": "What authentication mechanism does the payment service use?"}
+        # )
+
+        response = await graph.ainvoke({"query": "What is Nova tech company"})
+        print("final results:", response)
 
     except Exception as error:
         print(error)
