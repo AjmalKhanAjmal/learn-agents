@@ -1,10 +1,11 @@
-from app.graph.nodes import analyze_query, retrieve_documents
+from app.graph.nodes import RetrievalNode, analyze_query, retrieve_documents
 from langgraph.graph import START, StateGraph
 from app.graph.state import AgentState
 
 
-def build_graph():
+def build_graph(hybrid_retrieval_service):
     graph = StateGraph(AgentState)
+    retrieve_documents = RetrievalNode(hybrid_retrieval_service)
     graph.add_node("analyze_query", analyze_query)
     graph.add_node("retrieve_documents", retrieve_documents)
     graph.add_edge(START, "analyze_query")

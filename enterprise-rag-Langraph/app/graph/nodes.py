@@ -22,15 +22,61 @@ def analyze_query(state):
     }
 
 
-async def retrieve_documents(state):
-    query = state.get("rewritten_query") or state["query"]
-    # results = hybrid_retrieval_service.hybrid_retrievel(query=query, top_k=5)
-    service = get_hybrid_retrieval_service()
+# async def retrieve_documents(state):
+#     query = state.get("rewritten_query") or state["query"]
+#     # results = hybrid_retrieval_service.hybrid_retrievel(query=query, top_k=5)
+#     service = get_hybrid_retrieval_service()
 
-    results = await service.hybrid_retrievel(query=query, top_k=5)
-    return {"query": query, "reranked_results": results}
+#     results = await service.hybrid_retrievel(query=query, top_k=5)
+#     return {"query": query, "reranked_results": results}
 
 
+
+class RetrievalNode:
+    def __init__(self,hybrid_retrieval_service):
+        self.hybrid_retrieval_service = hybrid_retrieval_service
+        
+    async def __call__(self,state):
+        query = state.get['rewritten_query'] or state['query']
+        retrievel_results = await self.hybrid_retrieval_service.hybrid_retrievel(query, top_k=5)
+        return {
+            "query" : query,
+            "fused_results" : retrievel_results
+        }
+        
+        
+
+# class RetrievalNode:
+
+#     def __init__(self, hybrid_retrieval_service):
+
+#         self.hybrid_retrieval_service = (
+#             hybrid_retrieval_service
+#         )
+
+#     async def __call__(self, state: AgentState):
+
+#         query = (
+#             state.get("rewritten_query")
+#             or state["query"]
+#         )
+
+#         results = await self.hybrid_retrieval_service.hybrid_retrievel(
+#             query=query,
+#             top_k=5
+#         )
+
+#         return {
+#             "query": query,
+#             "fused_results": results,
+#         }
+        
+        
+        
+        
+        
+        
+        
 # def retrieve_documents(state):
 
 #     query = state.get("rewritten_query") or state["query"]

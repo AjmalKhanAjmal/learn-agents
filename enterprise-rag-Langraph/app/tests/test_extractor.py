@@ -3,6 +3,7 @@ from app.agents.query_analyzer import QueryAnalyzer
 
 import pytest
 
+from app.dependencies import get_hybrid_retrieval_service
 from app.graph.builder import build_graph
 
 
@@ -60,8 +61,9 @@ async def test_reranking():
         # response = query_analyzer.analyze(
         #     "Compare the authentication and database technology used by the payment service and order service."
         # )
-
-        graph = build_graph()
+        
+        hybrid_retrieval_service = get_hybrid_retrieval_service()
+        graph = build_graph(hybrid_retrieval_service)
 
         # response = graph.invoke(
         #     {"query": "What authentication mechanism does the payment service use?"}
