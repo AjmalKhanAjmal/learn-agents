@@ -11,15 +11,19 @@ query_analyzer = QueryAnalyzer()
 
 
 def analyze_query(state):
-    result = query_analyzer.analyze(state["query"])
-    return {
-        "intent": result.intent,
-        "requires_retrieval": result.requires_retrieval,
-        "requires_multi_hop": result.requires_multi_hop,
-        "sub_queries": result.sub_queries,
-        "rewritten_query": result.search_query,
-        "retrieval_attempt": 0,
-    }
+    try:
+        result = query_analyzer.analyze(state["query"])
+        return {
+            "intent": result.intent,
+            "requires_retrieval": result.requires_retrieval,
+            "requires_multi_hop": result.requires_multi_hop,
+            "sub_queries": result.sub_queries,
+            "rewritten_query": result.search_query,
+            "retrieval_attempt": 0,
+        }
+    except Exception as error:
+        print("error at analyze query", error)
+        raise error
 
 
 # async def retrieve_documents(state):
@@ -31,20 +35,33 @@ def analyze_query(state):
 #     return {"query": query, "reranked_results": results}
 
 
-
 class RetrievalNode:
-    def __init__(self,hybrid_retrieval_service):
-        self.hybrid_retrieval_service = hybrid_retrieval_service
-        
-    async def __call__(self,state):
-        query = state.get['rewritten_query'] or state['query']
-        retrievel_results = await self.hybrid_retrieval_service.hybrid_retrievel(query, top_k=5)
-        return {
-            "query" : query,
-            "fused_results" : retrievel_results
-        }
-        
-        
+    try:
+
+        def __init__(self, hybrid_retrieval_service):
+            self.hybrid_retrieval_service = hybrid_retrieval_service
+            print("passes")
+
+    except Exception as error:
+        print("error in retrtive constructor", error)
+        raise error
+
+    try:
+
+        async def __call__(self, state):
+
+            query = state.get("rewritten_query") or state["query"]
+
+            retrievel_results = await self.hybrid_retrieval_service.hybrid_retrievel(
+                query, top_k=5
+            )
+
+            return {"query": query, "fused_results": retrievel_results}
+
+    except Exception as error:
+        print("error in while caling Retrieval function ", error)
+        raise error
+
 
 # class RetrievalNode:
 
@@ -70,13 +87,8 @@ class RetrievalNode:
 #             "query": query,
 #             "fused_results": results,
 #         }
-        
-        
-        
-        
-        
-        
-        
+
+
 # def retrieve_documents(state):
 
 #     query = state.get("rewritten_query") or state["query"]

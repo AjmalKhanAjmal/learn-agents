@@ -61,7 +61,7 @@ async def test_reranking():
         # response = query_analyzer.analyze(
         #     "Compare the authentication and database technology used by the payment service and order service."
         # )
-        
+
         hybrid_retrieval_service = get_hybrid_retrieval_service()
         graph = build_graph(hybrid_retrieval_service)
 
@@ -69,7 +69,9 @@ async def test_reranking():
         #     {"query": "What authentication mechanism does the payment service use?"}
         # )
 
-        response = await graph.ainvoke({"query": "What is Nova tech company"})
+        response = await graph.ainvoke(
+            {"query": "When was NovaTech Solutions founded?"}
+        )
         print("final results:", response)
 
     except Exception as error:

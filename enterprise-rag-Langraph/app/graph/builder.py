@@ -1,4 +1,4 @@
-from app.graph.nodes import RetrievalNode, analyze_query, retrieve_documents
+from app.graph.nodes import RetrievalNode, analyze_query
 from langgraph.graph import START, StateGraph
 from app.graph.state import AgentState
 
