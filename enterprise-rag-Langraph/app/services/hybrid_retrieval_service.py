@@ -24,7 +24,7 @@ class HybridRetrievalService(BaseHybridRetriever):
         self.rerank_service_obj = rerank_service_obj
         self.llm_service = llm_service
 
-    async def hybrid_retrievel(self, query, top_k):
+    async def hybrid_retrievel(self, query, top_k,is_graph = False):
         try:
             semantic_results = self.vector_store.similarity_search(
                 query=query, top_k=top_k
@@ -47,16 +47,21 @@ class HybridRetrievalService(BaseHybridRetriever):
             #     keyword_results
             # }
 
-            hybrid_results = {
-                "symantic_results": semantic_results,
-                "keyword_results": keyword_results,
-            }
+            # hybrid_results = {
+            #     "symantic_results": semantic_results,
+            #     "keyword_results": keyword_results,
+            # }
             fused_results = self.fusion_service.fuse(
                 semantic_results=final_semantic_results,
                 keyword_results=keyword_results,
                 top_k=top_k,
             )
-
+            
+            # this added because we want only hybrid results for langraph so we returning here
+            
+            if is_graph:
+                return fused_results
+                
             reranked_results = self.rerank_service_obj.rerankService(
                 query, fused_results
             )

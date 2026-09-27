@@ -39,7 +39,10 @@ class Settings(BaseSettings):
     LLM_PROVIDER: str
 
     LLM_TEMPERATURE: int
+    
+    EVEDENCE_AVERAGE_SCORE : float
 
+    EVEDENCE_AVERAGE_LENGTH : int
 
 @lru_cache
 def get_settings() -> Settings:

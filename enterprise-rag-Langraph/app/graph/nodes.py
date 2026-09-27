@@ -1,5 +1,7 @@
 from app.agents.query_analyzer import QueryAnalyzer
+from app.core.logger import logger
 from app.dependencies import get_hybrid_retrieval_service
+from app.core.config import settings
 
 # from app.services.hybrid_retrieval_service import HybridRetrievalService
 # from app.routes.hybrid_retrieval import hybrid_retrieval
@@ -26,22 +28,13 @@ def analyze_query(state):
         raise error
 
 
-# async def retrieve_documents(state):
-#     query = state.get("rewritten_query") or state["query"]
-#     # results = hybrid_retrieval_service.hybrid_retrievel(query=query, top_k=5)
-#     service = get_hybrid_retrieval_service()
-
-#     results = await service.hybrid_retrievel(query=query, top_k=5)
-#     return {"query": query, "reranked_results": results}
-
-
 class RetrievalNode:
     try:
 
         def __init__(self, hybrid_retrieval_service):
             self.hybrid_retrieval_service = hybrid_retrieval_service
-            print("passes")
-
+            logger.info("intialized rerank object")
+            
     except Exception as error:
         print("error in retrtive constructor", error)
         raise error
@@ -53,7 +46,7 @@ class RetrievalNode:
             query = state.get("rewritten_query") or state["query"]
 
             retrievel_results = await self.hybrid_retrieval_service.hybrid_retrievel(
-                query, top_k=5
+                query, top_k=5,is_graph = True
             )
 
             return {"query": query, "fused_results": retrievel_results}
@@ -61,6 +54,95 @@ class RetrievalNode:
     except Exception as error:
         print("error in while caling Retrieval function ", error)
         raise error
+
+
+class RerankNode:
+    try:
+        def __init__(self,rerank_service):
+            self.rerank_service = rerank_service
+            logger.info("intialized rerank object")
+            
+        def __call__(self,state):
+            logger.info("Started rerank service ")
+            query = state.get("rewritten_query") or state["query"]
+            fusion_results = state.get("fused_results", [])
+            rerank_results = self.rerank_service.rerankService(query,fusion_results)
+            logger.info("rerank results length : %d ",len(rerank_results))
+            return {
+                "reranked_results" : rerank_results
+            }
+            
+    except Exception as error:
+        raise error
+            
+
+def evaluate_evidence(state):
+    logger.info("started evaluate evedence")
+    documents =  state.get('reranked_results' or [])
+    # logger.info("2nd line evaluate evedence")
+    if not documents:
+        return{ 
+            "evidence_sufficient": False,
+            "evidence_score": 0.0,
+            "evidence_reason": "No relevant documents found.",
+        }
+    # logger.info("3 rd line evaluate evedence")
+    
+    reranked_score = [ d.rerank_score for d in documents]
+    
+    # logger.info("3 rd line evaluate evedence")
+    
+    # average_score = sum(reranked_score)/len(reranked_score) if reranked_score else 0
+    
+    top_score = reranked_score[0]
+
+    sufficient = top_score >= 0.0
+    
+    # sufficient = average_score >= settings.EVEDENCE_AVERAGE_SCORE and len(documents) >= settings.EVEDENCE_AVERAGE_LENGTH
+    return  { 
+               "evidence_sufficient": sufficient,
+                "evidence_score": top_score,
+                "evidence_reason": ("Evidence sufficient." if sufficient else "Evidence quality is insufficient." )
+                }
+    
+    
+
+# def evaluate_evidence(state):
+
+#     documents = state.get("reranked_results", [])
+
+#     if not documents:
+
+#         return {
+#             "evidence_sufficient": False,
+#             "evidence_score": 0.0,
+#             "evidence_reason": "No relevant documents found.",
+#         }
+
+#     scores = [d.get("score", 0) for d in documents]
+
+#     average_score = sum(scores) / len(scores) if scores else 0
+
+#     sufficient = len(documents) >= 2 and average_score >= 0.35
+
+#     return {
+#         "evidence_sufficient": sufficient,
+#         "evidence_score": average_score,
+#         "evidence_reason": (
+#             "Evidence sufficient."
+#             if sufficient
+#             else "Evidence quality is insufficient."
+#         ),
+#     }
+
+
+
+
+
+
+
+
+
 
 
 # class RetrievalNode:

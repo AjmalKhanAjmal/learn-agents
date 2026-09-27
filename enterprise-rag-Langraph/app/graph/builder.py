@@ -1,4 +1,4 @@
-from app.graph.nodes import RetrievalNode, analyze_query
+from app.graph.nodes import RerankNode, RetrievalNode, analyze_query,evaluate_evidence
 from langgraph.graph import START, StateGraph
 from app.graph.state import AgentState
 
@@ -6,10 +6,19 @@ from app.graph.state import AgentState
 def build_graph(hybrid_retrieval_service):
     graph = StateGraph(AgentState)
     retrieve_documents = RetrievalNode(hybrid_retrieval_service)
+    rerank_documents = RerankNode(hybrid_retrieval_service.rerank_service_obj)
     graph.add_node("analyze_query", analyze_query)
     graph.add_node("retrieve_documents", retrieve_documents)
+    graph.add_node("rerank_documents", rerank_documents)
+    graph.add_node("evaluate_evidence", evaluate_evidence)
+    
+    
     graph.add_edge(START, "analyze_query")
     graph.add_edge("analyze_query", "retrieve_documents")
+    graph.add_edge("retrieve_documents", "rerank_documents")
+    graph.add_edge("rerank_documents", "evaluate_evidence")
+    
+    
 
     return graph.compile()
     # return graph
