@@ -2,6 +2,7 @@ from app.agents.query_analyzer import QueryAnalyzer
 from app.core.logger import logger
 from app.dependencies import get_hybrid_retrieval_service
 from app.core.config import settings
+from app.llm.generic_llm_provider import GenericLLMProvider
 
 # from app.services.hybrid_retrieval_service import HybridRetrievalService
 # from app.routes.hybrid_retrieval import hybrid_retrieval
@@ -34,7 +35,7 @@ class RetrievalNode:
         def __init__(self, hybrid_retrieval_service):
             self.hybrid_retrieval_service = hybrid_retrieval_service
             logger.info("intialized rerank object")
-            
+
     except Exception as error:
         print("error in retrtive constructor", error)
         raise error
@@ -46,7 +47,7 @@ class RetrievalNode:
             query = state.get("rewritten_query") or state["query"]
 
             retrievel_results = await self.hybrid_retrieval_service.hybrid_retrievel(
-                query, top_k=5,is_graph = True
+                query, top_k=5, is_graph=True
             )
 
             return {"query": query, "fused_results": retrievel_results}
@@ -58,54 +59,124 @@ class RetrievalNode:
 
 class RerankNode:
     try:
-        def __init__(self,rerank_service):
+
+        def __init__(self, rerank_service):
             self.rerank_service = rerank_service
             logger.info("intialized rerank object")
-            
-        def __call__(self,state):
+
+        def __call__(self, state):
             logger.info("Started rerank service ")
             query = state.get("rewritten_query") or state["query"]
             fusion_results = state.get("fused_results", [])
-            rerank_results = self.rerank_service.rerankService(query,fusion_results)
-            logger.info("rerank results length : %d ",len(rerank_results))
-            return {
-                "reranked_results" : rerank_results
-            }
-            
+            rerank_results = self.rerank_service.rerankService(query, fusion_results)
+            logger.info("rerank results length : %d ", len(rerank_results))
+            return {"reranked_results": rerank_results}
+
     except Exception as error:
         raise error
-            
+
 
 def evaluate_evidence(state):
     logger.info("started evaluate evedence")
-    documents =  state.get('reranked_results' or [])
+    documents = state.get("reranked_results" or [])
     # logger.info("2nd line evaluate evedence")
     if not documents:
-        return{ 
+        return {
             "evidence_sufficient": False,
             "evidence_score": 0.0,
             "evidence_reason": "No relevant documents found.",
         }
     # logger.info("3 rd line evaluate evedence")
-    
-    reranked_score = [ d.rerank_score for d in documents]
-    
+
+    reranked_score = [d.rerank_score for d in documents]
+
     # logger.info("3 rd line evaluate evedence")
-    
+
     # average_score = sum(reranked_score)/len(reranked_score) if reranked_score else 0
-    
+
     top_score = reranked_score[0]
 
     sufficient = top_score >= 0.0
-    
+
     # sufficient = average_score >= settings.EVEDENCE_AVERAGE_SCORE and len(documents) >= settings.EVEDENCE_AVERAGE_LENGTH
-    return  { 
-               "evidence_sufficient": sufficient,
-                "evidence_score": top_score,
-                "evidence_reason": ("Evidence sufficient." if sufficient else "Evidence quality is insufficient." )
-                }
-    
-    
+    return {
+        "evidence_sufficient": sufficient,
+        "evidence_score": top_score,
+        "evidence_reason": (
+            "Evidence sufficient."
+            if sufficient
+            else "Evidence quality is insufficient."
+        ),
+    }
+
+
+def rewrite_query(state):
+    logger.info("started rewrite query")
+    prompt = f"""
+Rewrite the following enterprise RAG query to improve document retrieval.
+
+original query:{state["query"]}
+
+previous query:{state.get("rewritten_query","")}
+
+Reason: state.get("evidence_reason","")
+
+"""
+
+    llm_provider = GenericLLMProvider()
+    response = llm_provider.llm.invoke([{"role": "user", "content": prompt}])
+    logger.info("rewritten query : %s", response.content)
+    return {"rewritten_query": response.content}
+
+
+def generate_answer(state):
+    logger.info("started generate answer")
+    documents = state.get("reranked_results", [])
+    context = "\n\n".join(
+        # f"[chunk:{d.chunk_id}]" f"[content:{d.content}]" for d in documents
+        f"[chunk:{d.chunk_id}]" f"{d.content}"
+        for d in documents
+    )
+    return {"answer": context}
+
+
+# def generate_answer(state):
+
+#     documents = state.get("reranked_results", [])
+
+#     context = "\n\n".join(
+#         f"[chunk:{d['chunk_id']}]\n" f"{d['content']}" for d in documents
+#     )
+
+#     prompt = f"""
+# You are an enterprise knowledge assistant.
+
+# Answer the user's question using ONLY
+# the supplied context.
+
+# If the context does not contain enough
+# information, explicitly say that the
+# knowledge base does not contain enough
+# information.
+
+# Every factual statement must be supported
+# by a citation.
+
+# Citation format:
+
+# [chunk:CHUNK_ID]
+
+# User question:
+# {state["query"]}
+
+# Context:
+# {context}
+# """
+
+#     response = llm_service.invoke([HumanMessage(content=prompt)])
+
+#     return {"answer": response.content}
+
 
 # def evaluate_evidence(state):
 
@@ -134,15 +205,6 @@ def evaluate_evidence(state):
 #             else "Evidence quality is insufficient."
 #         ),
 #     }
-
-
-
-
-
-
-
-
-
 
 
 # class RetrievalNode:
