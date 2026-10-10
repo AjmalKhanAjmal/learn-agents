@@ -1,7 +1,10 @@
+from app.agents.prompts import GENERATION_PROMPT
 from app.agents.query_analyzer import QueryAnalyzer
 from app.core.logger import logger
 from app.dependencies import get_hybrid_retrieval_service
 from app.core.config import settings
+from langchain_core.messages import HumanMessage
+from app.llm.generic_llm_provider import GenericLLMProvider
 
 # from app.services.hybrid_retrieval_service import HybridRetrievalService
 # from app.routes.hybrid_retrieval import hybrid_retrieval
@@ -26,6 +29,7 @@ def analyze_query(state):
     except Exception as error:
         print("error at analyze query", error)
         raise error
+
 
 
 class RetrievalNode:
@@ -96,7 +100,7 @@ def evaluate_evidence(state):
     
     top_score = reranked_score[0]
 
-    sufficient = top_score >= 0.0
+    sufficient = top_score >= settings.EVEDENCE_TOP_SCORE
     
     # sufficient = average_score >= settings.EVEDENCE_AVERAGE_SCORE and len(documents) >= settings.EVEDENCE_AVERAGE_LENGTH
     return  { 
@@ -106,6 +110,83 @@ def evaluate_evidence(state):
                 }
     
     
+
+
+def generate_answer(state):
+    
+    query = state.get("rewritten_query") or state["query"]
+    
+    documents = state.get("reranked_results" or [])
+    
+#     documents = [
+#     {
+#         "chunk_id": "chunk_0",
+#         "content": "NovaTech Solutions was founded in 2021."
+#     },
+#     {
+#         "chunk_id": "chunk_1",
+#         "content": "Aziz Khan joined NovaTech as a backend engineer."
+#     }
+# ]
+    llm_service = GenericLLMProvider()
+    
+    content = "\n\n".join(f"[chunk : {d.chunk_id} ]\n" f"{d.content}"  for d in documents)
+    
+    prompt = GENERATION_PROMPT.format(query = query, context = content)
+    
+    
+    response = llm_service.invoke([HumanMessage(content=prompt)])
+
+    return {"answer": response.content}
+    
+    # return promptresponse
+    
+
+# print(generate_answer("state"))
+    
+    
+    
+
+    
+#     context = "\n\n".join(
+#         f"[chunk:{d['chunk_id']}]\n" f"{d['content']}" for d in documents
+#     )
+
+#     prompt = f"""
+# You are an enterprise knowledge assistant.
+
+# Answer the user's question using ONLY
+# the supplied context.
+
+# If the context does not contain enough
+# information, explicitly say that the
+# knowledge base does not contain enough
+# information.
+
+# Every factual statement must be supported
+# by a citation.
+
+# Citation format:
+
+# [chunk:CHUNK_ID]
+
+# User question:
+# {state["query"]}
+
+# Context:
+# {context}
+# """
+
+#     response = llm_service.invoke([HumanMessage(content=prompt)])
+
+#     return {"answer": response.content}
+
+
+    
+
+
+
+
 
 # def evaluate_evidence(state):
 

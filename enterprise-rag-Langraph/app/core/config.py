@@ -43,6 +43,8 @@ class Settings(BaseSettings):
     EVEDENCE_AVERAGE_SCORE : float
 
     EVEDENCE_AVERAGE_LENGTH : int
+    
+    EVEDENCE_TOP_SCORE :float
 
 @lru_cache
 def get_settings() -> Settings:

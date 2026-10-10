@@ -5,6 +5,7 @@ import pytest
 
 from app.dependencies import get_hybrid_retrieval_service
 from app.graph.builder import build_graph
+from app.graph.nodes import generate_answer
 
 
 @pytest.mark.asyncio
@@ -72,6 +73,8 @@ async def test_reranking():
         response = await graph.ainvoke(
             {"query": "When was NovaTech Solutions founded?"}
         )
+        
+        
         print("final results:", response)
 
     except Exception as error:

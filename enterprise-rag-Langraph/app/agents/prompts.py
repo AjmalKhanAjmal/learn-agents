@@ -41,3 +41,29 @@ Rules:
 User query:
 {query}
 """
+
+
+GENERATION_PROMPT = """
+You are an enterprise knowledge assistant.
+
+Answer the user's question using ONLY
+the supplied context.
+
+If the context does not contain enough
+information, explicitly say that the
+knowledge base does not contain enough
+information.
+
+Every factual statement must be supported
+by a citation.
+
+Citation format:
+
+[chunk:CHUNK_ID]
+
+User question:
+{query}
+
+Context:
+{context}
+"""
