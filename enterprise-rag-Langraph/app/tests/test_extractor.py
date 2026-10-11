@@ -67,10 +67,13 @@ async def test_reranking():
         hybrid_retrieval_service = get_hybrid_retrieval_service()
         graph = build_graph(hybrid_retrieval_service)
 
-        response = await graph.ainvoke(
-            {"query": "When was NovaTech Solutions founded?"}
-        )
+        # response = await graph.ainvoke(
+        #     {"query": "When was NovaTech Solutions founded?"}
+        # )
        
+        response = await graph.ainvoke(
+                   {"query": "When wa Abdul Kalam born?"}
+               )
     
         print("final results:", response)
 

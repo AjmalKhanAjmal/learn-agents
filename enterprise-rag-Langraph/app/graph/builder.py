@@ -1,3 +1,4 @@
+from app.graph.edges import route_after_analys, route_after_evidence,route_after_validation
 from app.graph.nodes import (
     RerankNode,
     RetrievalNode,
@@ -7,7 +8,7 @@ from app.graph.nodes import (
     generate_answer,
     validate_answer
 )
-from langgraph.graph import START, StateGraph
+from langgraph.graph import START,END,StateGraph
 from app.graph.state import AgentState
 
 
@@ -25,12 +26,30 @@ def build_graph(hybrid_retrieval_service):
     
 
     graph.add_edge(START, "analyze_query")
-    graph.add_edge("analyze_query", "retrieve_documents")
+    graph.add_conditional_edges("analyze_query",route_after_analys,{
+        "retrieve":"retrieve_documents",
+        "generate":"generate_answer"
+    })
+    # graph.add_edge("analyze_query", "retrieve_documents")
     graph.add_edge("retrieve_documents", "rerank_documents")
     graph.add_edge("rerank_documents", "evaluate_evidence")
-    graph.add_edge("evaluate_evidence", "rewrite_query")
-    graph.add_edge("rewrite_query", "generate_answer")
+    
+    graph.add_conditional_edges(
+        "evaluate_evidence",
+        route_after_evidence,
+        {
+            "rewrite":"rewrite_query",
+            "generate":"generate_answer"
+        }
+    )
+
     graph.add_edge("generate_answer", "validate_answer")
+    
+    graph.add_conditional_edges("validate_answer",route_after_validation,{
+            "answer": END,
+            "retry": "rewrite_query",
+    })
+    
     
 
     return graph.compile()
@@ -94,9 +113,9 @@ def build_graph(hybrid_retrieval_service):
 
 #     graph.add_edge("generate_answer", "validate_answer")
 
-#     graph.add_conditional_edges(
+#     graph.add_conditional_edges(  
 #         "validate_answer",
-#         route_after_validation,
+#         route_after_validation,   
 #         {
 #             "answer": END,
 #             "retry": "rewrite_query",
