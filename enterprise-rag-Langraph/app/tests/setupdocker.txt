@@ -1,0 +1,41 @@
+mkdir C:\Tools\opensearch-docker -Force
+cd C:\Tools\opensearch-docker
+notepad docker-compose.yml //creates file in notepad
+
+paste below code in above file:
+================================
+
+services:
+  opensearch:
+    image: opensearchproject/opensearch:3.9.0
+    container_name: enterprise-opensearch
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=true
+      - OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "127.0.0.1:9201:9200"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    restart: unless-stopped
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:3.9.0
+    container_name: enterprise-opensearch-dashboards
+    depends_on:
+      - opensearch
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+    ports:
+      - "127.0.0.1:5601:5601"
+    restart: unless-stopped
+
+volumes:
+  opensearch_data:
+
+
+
+docker compose pull //It will download 
+docker compose up -d  // it start containers
+docker compose ps  //check status
