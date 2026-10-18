@@ -1,4 +1,8 @@
 # pytest -s .\app\tests\test_extractor.py
+#  uvicorn app.main:app --reload
+
+# http://localhost:5601/app/home  //dashboard
+
 from app.agents.query_analyzer import QueryAnalyzer
 
 import pytest
@@ -72,7 +76,7 @@ async def test_reranking():
         # )
        
         response = await graph.ainvoke(
-                   {"query": "When wa Abdul Kalam born?"}
+                   {"query": "What caused incident INC-7742?"}
                )
     
         print("final results:", response)
