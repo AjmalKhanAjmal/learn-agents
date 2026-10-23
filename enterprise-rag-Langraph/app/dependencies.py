@@ -28,7 +28,7 @@ def get_upload_service():
         embedding_service = SentenceTransformerEmbedder()
         embeddings = embedding_service.get_embeddings()
         pineconeVectorStore = PineconeVectorStoreService(embeddings=embeddings)
-        bm25Store = BM25Store()
+        bm25Store = BM25Store() 
         return UploadService(
             storage=storage,
             extractor=extractor,

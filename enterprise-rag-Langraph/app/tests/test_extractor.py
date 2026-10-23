@@ -1,4 +1,5 @@
 # pytest -s .\app\tests\test_extractor.py
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 #  uvicorn app.main:app --reload
 
 # http://localhost:5601/app/home  //dashboard

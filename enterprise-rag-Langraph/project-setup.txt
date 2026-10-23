@@ -11,3 +11,19 @@ New-Item app\main.py -ItemType File
 New-Item requirements.txt
 
 pip install fastapi uvicorn
+
+
+again when project  startig in new laptop
+=========================================
+check python versions : 
+deactivate > py -0p
+
+I already installed python version 3.15 but my project supports only 3.12 so  I installing pyhton version 3.12
+Step : 1 -- Remove-Item -Recurse -Force .venv
+Step : 2 --  py -3.12 -m venv .venv
+
+
+docker set up :
+================
+docker compose config
+docker compose up --build -d

@@ -1,0 +1,68 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: enterprise-rag-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      OPENSEARCH_URL: https://opensearch:9200
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - rag-network
+
+  opensearch:
+    image: opensearchproject/opensearch:3.9.0
+    container_name: enterprise-rag-opensearch
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_PASSWORD:?Set OPENSEARCH_PASSWORD in .env}
+      OPENSEARCH_JAVA_OPTS: "-Xms1g -Xmx1g"
+    ports:
+      - "127.0.0.1:9201:9200"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    networks:
+      - rag-network
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'curl -k -f -u "admin:$${OPENSEARCH_INITIAL_ADMIN_PASSWORD}" https://localhost:9200/_cluster/health'
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:3.9.0
+    container_name: enterprise-rag-dashboards
+    restart: unless-stopped
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+      OPENSEARCH_USERNAME: admin
+      OPENSEARCH_PASSWORD: ${OPENSEARCH_PASSWORD:?Set OPENSEARCH_PASSWORD in .env}
+      OPENSEARCH_SSL_VERIFICATIONMODE: none
+    ports:
+      - "127.0.0.1:5602:5601"
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    networks:
+      - rag-network
+
+volumes:
+  opensearch_data:
+  uploads_data:
+
+networks:
+  rag-network:
+    driver: bridge

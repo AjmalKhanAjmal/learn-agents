@@ -45,7 +45,13 @@ class Settings(BaseSettings):
     EVEDENCE_AVERAGE_LENGTH : int
     
     EVEDENCE_TOP_SCORE :float
+    
+    OPENSEARCH_HOST : str
 
+    OPENSEARCH_PORT : int
+    
+    OPENSEARCH_INDEX: str
+ 
 @lru_cache
 def get_settings() -> Settings:
     """
