@@ -51,6 +51,9 @@ class Settings(BaseSettings):
     OPENSEARCH_PORT : int
     
     OPENSEARCH_INDEX: str
+    
+    OPENSEARCH_USERNAME:str
+    OPENSEARCH_PASSWORD:str
  
 @lru_cache
 def get_settings() -> Settings:

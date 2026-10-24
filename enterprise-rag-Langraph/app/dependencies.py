@@ -36,7 +36,7 @@ def get_upload_service():
             RecursiveSplitter=RecursiveSplitter,
             pineconeVectorStore=pineconeVectorStore,
             bm25Store=bm25Store,
-        )
+        ) 
     except Exception as error:
         raise HTTPException(
             status_code=500,  # why this showing error for api response

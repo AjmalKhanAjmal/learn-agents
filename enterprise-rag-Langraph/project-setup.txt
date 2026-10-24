@@ -27,3 +27,14 @@ docker set up :
 ================
 docker compose config
 docker compose up --build -d
+
+
+
+opensearch in personal laptop without docker :
+
+cd "C:\Users\Admin\Downloads\opensearch-3.9.0"
+$env:OPENSEARCH_INITIAL_ADMIN_PASSWORD = "MyStrongPass123!ChangeMe"
+.\opensearch-windows-install.bat
+
+need to open in another powershell and run :
+curl.exe -k -u "admin:MyStrongPass123!ChangeMe" https://127.0.0.1:9200
