@@ -38,3 +38,6 @@ $env:OPENSEARCH_INITIAL_ADMIN_PASSWORD = "MyStrongPass123!ChangeMe"
 
 need to open in another powershell and run :
 curl.exe -k -u "admin:MyStrongPass123!ChangeMe" https://127.0.0.1:9200
+
+fronend env file 
+VITE_API_BASE_URL=http://127.0.0.1:8000

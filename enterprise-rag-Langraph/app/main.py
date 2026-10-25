@@ -6,7 +6,22 @@ from app.routes.upload import router as upload_router
 from app.routes.chat import router as chat_router
 from app.routes.retrieval import router as search_router
 from app.routes.hybrid_retrieval import router as hybrid_search_router
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI(title="Enterprise RAG API", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # @app.exception_handler(ResponseValidationError)
