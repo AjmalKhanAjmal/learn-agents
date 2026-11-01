@@ -1,0 +1,12 @@
+The **Transformer architecture** (34:11) is a revolutionary deep learning model structure that serves as the foundation for almost all modern LLMs, including *Gemini* and *DeepSeek*. It is the "operating system" that allows these models to process text effectively.
+
+### How Transformers Work
+
+The YouTuber explains that the Transformer architecture is built upon the **Attention Mechanism**. Here is the breakdown of the concept:
+
+*   **The Two Core Blocks:** A simplified Transformer consists of two primary components. The most critical is the **Attention Block**, which is where the model calculates the relevance of different words (tokens) to one another to understand context.
+*   **The Role of Transformers:** While an LLM acts as the overall system (capable of searching the web, using external tools, or extracting information), the Transformer architecture acts as the engine that processes the tokens and generates the output.
+*   **Computational Scaling:** The YouTuber notes that the computational complexity of the Transformer architecture scales as $O(n^2)$, where $n$ represents the number of tokens. As the input length increases, the architecture becomes significantly more expensive and complex to run.
+*   **Alternatives:** Because of this scaling cost, researchers are developing alternatives to the traditional Transformer, such as **State Space Models (SSMs)**, which are used in newer models like *Mamba*.
+
+In short, the Transformer architecture is the essential technology that enabled the current explosion in generative AI, as introduced in the 2017 research paper, *Attention Is All You Need*.

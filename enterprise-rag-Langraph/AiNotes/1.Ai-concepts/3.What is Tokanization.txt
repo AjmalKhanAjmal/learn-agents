@@ -1,0 +1,32 @@
+--> Procss of converting text to token is called tokenization
+-->We know that LLMs and machines are not able to understand human 
+language directly—they cannot directly understand Hindi, English, 
+Punjabi, or Japanese. Therefore, we need to convert every string and 
+every piece of text into numbers. Generally whenever we chat with 
+chatgpt or cloude we  write lot of text to convert that all of test 
+directly into numbers is really difficult so, we need a system to 
+break that text down into smaller parts. This smallest parts we called
+ a token.
+
+-->When imagining a token, you can think of it as about 3/4 of an English 
+word. Just as we use words in English, we use tokens when talking in 
+terms of LLMs. For example, if you enter the sentence "I like generative AI"
+into an OpenAI tokenizer, it divides the sentence into five tokens:
+ "I", "like", "gener", "ative", and "AI".
+ -->ative in english isa very popular suffix which exists in mulitple
+ words like creative,innovative, talkative, here ative esists agian 
+ and again that is why it's haave specific meaning for LLM
+ 
+--> https://platform.openai.com/tokenizer (we can check tokens characters and ids)
+
+
+There is a logic behind breaking language into tokens:
+
+Numerical Conversion: It becomes much easier to convert smaller units 
+of text into numbers.
+Vocabulary Building: Tokens help an LLM build its vocabulary or "dictionary."
+Each token is associated with a specific token ID,from which it becomes
+easier to identify that word, so for each each token its token ID which
+ acts like an index.
+ This entire process of converting text into tokens is called tokenization, 
+and it is performed by specialized algorithms.

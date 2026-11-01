@@ -1,0 +1,39 @@
+The next term is the Context Window (21:27), which acts like the RAM
+or working memory for a Large Language Model (LLM) during a specific
+conversation. Just as humans have a limited amount of information
+they can keep in mind during a single chat, 
+There is a perticular limit to track what exactly happned in the
+conversation. THis type of limit we call context window and these tracing
+happens in number of tokens
+an LLM has a specific
+limit on how much information it can track in a current session.`2
+This limit, or memory, is measured in number of tokens.
+
+Key takeaways about the Context Window:
+
+Evolution of capacity: Earlier models like GPT-1 (2022) had a context 
+window of only 512 tokens, while modern models like GPT-6 (asra) or
+ Claude can handle up to 1 million tokens.
+What gets stored: The window tracks the user's input, 
+the LLM's generated response, all previous messages in the current 
+conversation, and any uploaded documents or images
+.
+Performance degradation: It is generally recommended not to fill the 
+context window to its maximum capacity (e.g., stay below 80-85%) 
+
+-->And we never have to fill context window below  80-85%.Because as the context
+window keeps filling up at the last will ot get the quality of response 
+or response tends to degrade 
+
+Best practices: To handle complex tasks, it is better to break 
+the request into smaller sub-tasks, summarize long conversations, 
+or start a new conversation to clear the window.
+For every subtask we have a seperate conversation or if our context 
+window is fills up today we have a option inside modern tools 
+to summarize the conversation so we can empty up the context window
+
+Attention patterns: 
+Generally in llms one pattern was observed they focus more on the 
+start of the and end of the query middl part of content it becomes little 
+bit "fuzzy.".So its important that whenever we having large complex to 
+give llm better to include the important bits either in start or at end

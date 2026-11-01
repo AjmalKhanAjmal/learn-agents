@@ -1,0 +1,25 @@
+LLMs are deep learning models or deep neural networks which are trained on large textual dart
+--> Large data but millions of data which are  coming from entire wikipedia which means millions of books.almost the entire internet
+llm are trained with that data so that data we call as large data or big data
+-->And this data is mostly textual in nature which means language only that is why we call them as large language models
+-->large language models are our llms are very good at in understand the human language
+to generate, translate, summarize
+-->Generally we give a query to llm based on that query it gives us response
+--> capital of india -> delhi
+-->Here llms areprediting the next word or the next term if we say in it techinically its predicting the next token
+--> If ask capital of india ,LLm are predicts what should be the next word? so next its give peinted answer
+llm predict the next tokens by using lot of math.Mathis help to llm what is the next word after a word? The one whose arrival is the highest probability
+
+
+-->LLMs, predict the next token. And how do they predict the next token?
+ By using a lot of math. There is a lot of math involved in predicting
+  which next word has the highest probability of appearing after a word.
+ It requires a lot of data to recognize patterns in human language, 
+ which allows LLMs to identify that 
+  if 'Capital of India' is written, there is a high probability delhi  
+  'is' should come after it. There is a very low probability that 
+  'apple' or 'mango' would directly print after 'Delhi'. So, in this 
+  way, it is all a game of probabilities—which is the next best word 
+  that will fit into our proper response.
+
+And LLMs work on this exact logic to generate a response for us."

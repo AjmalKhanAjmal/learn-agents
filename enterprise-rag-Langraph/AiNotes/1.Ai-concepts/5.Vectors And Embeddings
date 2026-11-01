@@ -1,0 +1,107 @@
+ How llms understand input
+ When we pass as input tp llm then it will converted into token
+ for every token having one token ID.
+ LLM does not know the meaning or relationship of any input Or tokens
+ It knows the meaning when the entire token is converted into vectors
+
+ Vectors : We we read in maths that verctor is any quantity that has magnitude
+ and some directions, so that same method of concept given to llm.
+ Basically if we use plain numbers ther is no relation between numbers
+ but we need some way to relate and to co relate differnt tokens with other
+ so that there is some meaning in input to feed to the LLM 
+ 
+example : For cat we create one vector. vector nothing but 
+ 
+
+*Vectors (25:33):** In the context of LLMs, a vector is a 
+one-dimensional array of numbers that represents the characteristics
+ of a token. While mathematically defined by magnitude and direction,
+  here they serve to quantify the properties of a word—such as whether
+   it is an animal, object, or has specific physical features—so 
+   the model can understand relationships between them.
+*   **Visualizing Vectors (28:03):** Vectors exist in high-dimensional
+ space. For simplicity, we can visualize them in 2D or 3D space, 
+ where **related tokens are plotted close together**. For example, 
+ the vectors for 'cat' and 'lion' appear near each other because 
+ they belong to the same family, unlike unrelated objects.
+
+we can also call vectors as vector embeddings
+Vectors individually is just format of storing data that we have 1D array
+which has multiple numbers inside it. Embeddings actually tell us that
+these the vector is specifically for llms.Therefore, tokens carry some 
+meaning.
+
+*   **Embeddings (29:54):** Often referred to as **vector embeddings**, 
+these represent the semantic meaning assigned to tokens within the LLM. 
+While a vector is the technical storage format (the array of numbers), 
+embeddings specifically capture the **meaning and contextual 
+relationships** of the data, allowing the AI to understand that 'cat' 
+and 'lion' share conceptual similarities.
+
+
+
+Attention : 
+========================
+The **Attention Mechanism** (30:19) is a foundational concept that 
+allows Large Language Models (LLMs) to understand the **contextual 
+meaning** of words based on their relationship to other words in a 
+sentence.
+
+### Why Attention Matters
+
+Simply converting words into vector embeddings isn't enough 
+because words can have different meanings based on the context.   
+For example, in the sentences "I code in Python" and "A Python bit me," 
+the word "Python" refers to two entirely different things: 
+a **programming language** and a **snake**. The Attention Mechanism 
+helps the model determine which other words in the sentence provide 
+the necessary context to clarify the meaning.
+
+Lets take two sentences two understand the atttention.Lets say 
+"I code in Python" and "A Python bit me,"
+I these two sentences pyton word to vectore embeddings convert inside
+and then feed to llm that is not going to br enogh to undersand the 
+meaning because pyhon has same speling and token also same in sentences
+but its context is entirey different In first sentence 
+a **programming language** and second is a **snake**. and there will 3 rd sesnence 
+like manty pyhton wich brtsh comedy group so for any token .
+So for any tokens converting just tokens is not enough.We have to understand
+the token  with the other token in context window or input. So we use special 
+mechanism to do which is called attention.
+Inside attention mechanism Basically we decide wheather the having relavant
+tokens to perticular  individual token inside the input or context 
+window.
+
+### How It Works
+
+Lets say we have sentences in which we have to undersand the meaning of a
+perticular token. So that  for this we create vector specil vector 
+query vector for remaining tokens key vectors. In bewenn this key and query 
+vector we perform sum mathematical operations called attention score
+And thsi attenion score tell us how other tokens relavant to key key word
+ 
+**Query, Key, and Value Vectors**: For each token, the model 
+creates a **query vector** to represent what it is looking for 
+and **key vectors** for all other tokens in the sentence to 
+represent what they offer.
+
+*   **Attention Score Calculation**: The model performs mathematical 
+operations (like a **dot product**) between the query and key 
+vectors to calculate an **attention score**. A higher score indicates 
+that a specific token is more relevant for understanding the current word.
+ I code in pyhon -> if code word is used in insode teh senetnce so llm
+ would know that is a high probality of taking about phthon programming
+  
+
+*   **Contextual Resolution**: In "I code in Python," the word "code" 
+will have a high attention score relative to "Python," signaling to 
+the model that it is the programming language. In "A Python bit me," 
+the word "bit" will have a high score, signaling that "Python" is a snake.
+
+### Origins
+
+The entire mechanism was introduced in a landmark 2017 research paper 
+titled ***Attention Is All You Need***. This paper introduced the 
+**Transformer architecture**, which is the backbone for modern LLMs 
+like *Gemini* and *DeepSeek*, relying entirely on this attention 
+mechanism to process information effectively.
