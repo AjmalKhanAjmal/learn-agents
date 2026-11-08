@@ -1,4 +1,13 @@
+Interview questions
 1.RAG_Interview_Preparation_Complete
     --> Production ready and debugging questions
 2.Complete RAG vs Fine.pdf
     --> Basic questions 
+3.100 + interview questions RAG.pdf
+    --> better to go after after complete Rag....
+4.AI_Engineer_Roadmap_6 months
+    -->Road map
+
+
+out side :
+10 genai questions.pdf basic and someadvance
