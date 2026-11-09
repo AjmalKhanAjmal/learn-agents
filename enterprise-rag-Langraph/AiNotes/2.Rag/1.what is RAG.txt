@@ -1,2 +1,7 @@
 Definition
 Retrieval-Augmented Generation (RAG) is an architecture pattern that:
+Basicallly RAG stands for Retrieval-Augmented Generation 
+Basically when you are training an LLM, it has a fixed context, it has
+a fixed knowledge base right? So RAG provides an external knowledge base
+where you can answer or basically llm can answer the queries from
+the external knowledge base

@@ -13,4 +13,48 @@ understanding the document structure because it is really important
 to understand what structure we are working with if, the document 
 structure is in code or is in a document formatn or a slide based on 
 that we do that, And definetly at the end do try some evaluaiton 
-techniques so that you know wheather youre working right or not
+techniques so that you know wheather you are working right or not
+
+
+So. the performance of any RAG system depend on how you chunk documents
+Chunking means breaking a document into parts, creating embeddings, 
+storing them in a vectore DB, and then retrieve those chunks when 
+you need them.
+There are multiple way to chunk, first one is
+1. Fixed size chunking :
+========================
+In this we basically say that each chunk will be fixed lets say 500 words
+So after every 500 words, you create a new chunk now  ther is the easiet
+to implement, but one issue arises the meaning generally split into 
+multiple chunks 
+
+2.Recursive Chunking :
+=======================
+The second is Recursive chucking  In this we define a maximum chunk size
+lets say 512 words then, we take an initial larg chunk of multiple paragraphs
+then we recursively shrink until the chunk size we defined as the maximum
+of our current chunk is smaller than that. so, from multiple paragraphs,
+you arrive at a single(one) paragraph. Then, if those  chunks are not smaller
+than the maximum chunk size, you arrive at a sentence and so on.
+This also easy to implement. This is used by default in many places.
+And it's also used by default in langgraph 
+
+3.Semantic Chunking :
+======================
+Third is semantic-based chunk, basically in this we create chunks based on 
+meaning. So this is a little more complex.
+What we do here is create embeddings of sentence. Then we look at where
+our meaning is changing based on the embedding. We calculate the distance
+of the embeddings in these sentences.And we find the the boundary
+where our meaning suddenly changes drastically.It's meanin that distance
+is increasing significantly. And then we start a new chunk from there.
+Now this is little bit complex to implement because we have to do more
+processing,so it's les useful.If we want more accuracy we can use this.
+
+4.overlapping chunking:
+=======================
+Now there is another technique called overlapping chunking which works
+alongside these previous techniques.What happens here is that the
+boudaries of the chunks overlap each other(dushre se).So basically,
+you will say that 50 tokens here and 50 tokens there, this chunks will
+overlap in both chunks 

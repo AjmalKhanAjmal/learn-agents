@@ -13,3 +13,8 @@ out side :
 10 genai questions.pdf basic and someadvance
 
 RAG_Latency_Optimization_Handbook.pdf better after basic
+
+
+What is vector less RAG :
+=========================
+https://www.youtube.com/shorts/Q3tzcDMDSpA
