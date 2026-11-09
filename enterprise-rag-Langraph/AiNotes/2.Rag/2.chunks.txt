@@ -1,0 +1,16 @@
+Chunking is method which i used while working with LLM's, when you give
+large amount of documents or large sourc text. Then that is really hard
+to LLM to parse. So chunking is basically a method to devide those 
+documents into small chunks or pieces so that the Retrieval can be
+done faster.
+And there are multiple ways which we can do chunking in. I particularly
+have used these few methods, One is deffinetely doing the chunking 
+based on the structure of a paragraph, then moving on to the sentences,
+then to the words bur deffinetely overlapping the chunk is important
+because you dont want to the end .
+And second method which  I definitely use in one of my projects is 
+understanding the document structure because it is really important 
+to understand what structure we are working with if, the document 
+structure is in code or is in a document formatn or a slide based on 
+that we do that, And definetly at the end do try some evaluaiton 
+techniques so that you know wheather youre working right or not

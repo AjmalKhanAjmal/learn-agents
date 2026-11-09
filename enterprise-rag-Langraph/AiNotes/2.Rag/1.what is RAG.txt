@@ -1,0 +1,2 @@
+Definition
+Retrieval-Augmented Generation (RAG) is an architecture pattern that:
