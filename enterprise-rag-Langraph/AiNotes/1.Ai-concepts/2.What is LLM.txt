@@ -1,4 +1,4 @@
-LLMs are deep learning models or deep neural networks which are trained on large textual dart
+LLMs are deep learning models or deep neural networks which are trained on large textual data
 --> Large data but millions of data which are coming from entire wikipedia which means millions 
 of books.almost the entire internet
 ***llm are trained with that data so that data we call as large data or big data**

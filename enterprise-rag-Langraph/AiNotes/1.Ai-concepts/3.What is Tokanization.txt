@@ -30,3 +30,16 @@ easier to identify that word, so for each each token its token ID which
  acts like an index.
  This entire process of converting text into tokens is called tokenization, 
 and it is performed by specialized algorithms.
+
+
+
+
+"Tokenization is nothing but breaking a sentence into smaller pieces.
+
+For example, when we type something in ChatGPT, it cannot directly work with our text as humans do.
+
+So, first it breaks our text into small pieces called tokens. Then each token is converted into a number called a token ID.
+
+These numbers are given to the LLM, and the model uses them to understand the input and generate a response.
+
+This process is called tokenization."
