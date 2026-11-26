@@ -1,1 +1,20 @@
- 
+ Inside AI having very large domain called machine learning
+Machine learning:
+We work with thos systems which require lots of data. so machine learning algorithm, that algorithm that trained on a lot of 
+data, it recognize patterns and then makes her decision.
+Like we have today date has spam detection within emails.So how does spam detection work?
+They looked at a lot of data related to email. And from there created patterns identify which emails are spam and which are real, genuine
+Deep learning :
+Inside machine learning having a subset, is the domain which is popular today which is called deep learning
+This is the part where we look at the neural network dealing with it. And what exactly are neural networks  
+->Inside brain having neurons having complete network
+--> Her deep learning is that part of machine learning and is that part of AI where we trying to work as human brain. and this 
+mimic i happens with help of these neural networks 
+--> We having there are different type o neural networks are there.
+
+Learn more apna college related to more about neurons and how they are related
+
+
+LLM :
+======
+LLM's ar our deep learning models

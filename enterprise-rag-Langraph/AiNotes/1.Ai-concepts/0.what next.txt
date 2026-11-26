@@ -2,7 +2,8 @@ Interview questions
 1.RAG_Interview_Preparation_Complete
     --> Production ready and debugging questions
 2.Complete RAG vs Fine.pdf
-    --> Basic questions 
+    --> Basic questions and prepare answers for questions in this list
+    -->check Production arcitecture 9. Enterprise Production Architecture
 3.100 + interview questions RAG.pdf
     --> better to go after after complete Rag....
 4.AI_Engineer_Roadmap_6 months
