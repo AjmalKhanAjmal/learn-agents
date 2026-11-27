@@ -1,0 +1,15 @@
+Even correct Information was exists in the database and vector search retrieving the correct doucments but not 
+in the right order.
+when most useful chunks not on the top, so llm receiveing weaker context first and leading to lower quality access
+using reranking instead of sending retrived information directl to the llm. we first reorder them where actuall relevance 
+to the user question and the sending to the llm for response generation, this one change improves our customer response quality 
+by 30 to 40 percent  
+
+So we used vector based Rag to get the top 20 relavant chucnks and all of these seem  semantaically important as well.but in this there
+are some other false positives and you will not pull all of these in the context window because our context gets wasted. 
+So here comes re ranker. In th re-reanker, basically what we do is that we take the users query plus these relevant 
+chunks that have come and combine them and we put it into a re-ranking model and it gives a relavence score for this combination.
+So for every chunk having a relevance chunk on its basis, the re-ranking of these chucnks is done. And after that, let's say from those
+top 20 we take the top five chunks and we give those to our LLM. From this, our context is also saved and we get better answer 
+
+why even use vecto RAG then why don't we just use a re-ranker directly 
